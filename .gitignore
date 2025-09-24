@@ -12,7 +12,7 @@ cython_debug/
 
 # data
 *.zip
-*.csv
+# *.csv
 *.txt
 *.db
 *.graphml
