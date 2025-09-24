@@ -1,4 +1,4 @@
-# Get the data from the gutenberg project
+# Get the data from the survey project
 import pandas as pd
 
 
