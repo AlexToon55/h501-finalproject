@@ -6,3 +6,7 @@ dependencies:
     - ipykernel
     - pandas
     - seaborn
+    - streamlit
+      - streamlit-navigation-bar
+    - plotly
+   
