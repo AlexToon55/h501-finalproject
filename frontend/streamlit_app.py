@@ -1,7 +1,9 @@
 import streamlit as st
+from streamlit_navigation_bar import st_navbar
 import pandas as pd
 import numpy as np
 
+page = st_navbar(["Home", "Are we Published?", "Charts", "Chart2", "Did someone say charts?"])
 st.write("Streamlit supports a wide range of data visualizations, including [Plotly, Altair, and Bokeh charts](https://docs.streamlit.io/develop/api-reference/charts). 📊 And with over 20 input widgets, you can easily make your data interactive!")
 
 all_users = ["Alice", "Bob", "Charly"]
@@ -17,3 +19,5 @@ if rolling_average:
 tab1, tab2 = st.tabs(["Chart", "Dataframe"])
 tab1.line_chart(data, height=250)
 tab2.dataframe(data, height=250, use_container_width=True)
+
+st.write(page)
