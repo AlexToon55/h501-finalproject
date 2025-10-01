@@ -7,6 +7,6 @@ dependencies:
     - pandas
     - seaborn
     - streamlit
-      - streamlit-navigation-bar
+    - streamlit-navigation-bar
     - plotly
    
