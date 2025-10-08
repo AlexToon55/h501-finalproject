@@ -4,7 +4,7 @@ import streamlit as st
 
 #streamlit
 st.set_page_config(page_title="Music & Mental Health", layout="wide")
-st.title("🎵 Music & Mental Health Survey Analysis (Interactive Dashboard)")
+st.title("Music & Mental Health Survey Analysis (Interactive Dashboard)")
 
 #load datase
 df = pd.read_csv("mxmh_survey_results.csv")
@@ -33,7 +33,7 @@ hours_range = st.sidebar.slider("🎚 Hours Listening per Day", min_hours, max_h
 
 #average health score
 min_health, max_health = float(df_clean["Avg_health"].min()), float(df_clean["Avg_health"].max())
-health_range = st.sidebar.slider("🧠 Average Mental Health Score", min_health, max_health, (min_health, max_health))
+health_range = st.sidebar.slider("Average Mental Health Score", min_health, max_health, (min_health, max_health))
 
 #genre filter
 selected_genres = st.sidebar.multiselect(
@@ -55,7 +55,7 @@ col1, col2 = st.columns(2)
 # 1. Hours Listening vs Average Health
 # -----------------------------------------
 with col1:
-    st.subheader("🎧 Hours Listening vs Mental Health")
+    st.subheader("Hours Listening vs Mental Health")
 
     fig1 = px.scatter(
         filtered_df,
@@ -77,7 +77,7 @@ with col1:
 # 2. Exploratory vs Reported Music Effects
 # -----------------------------------------
 with col2:
-    st.subheader("🎶 Exploring New Genres vs Reported Effects")
+    st.subheader("Exploring New Genres vs Reported Effects")
 
     fig2 = px.histogram(
         filtered_df,
@@ -95,7 +95,7 @@ with col2:
 # 3. Variety of Genres vs Health
 # -----------------------------------------
 if selected_genres:
-    st.subheader("🎵 Variety of Genres vs Mental Health")
+    st.subheader("Variety of Genres vs Mental Health")
 
     filtered_df["Selected_Variety"] = (filtered_df[selected_genres] > 0).sum(axis=1)
 
@@ -114,3 +114,4 @@ if selected_genres:
     )
     fig3.update_traces(marker=dict(size=7))
     st.plotly_chart(fig3, use_container_width=True)
+
