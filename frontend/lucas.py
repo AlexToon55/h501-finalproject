@@ -1,50 +1,41 @@
 import pandas as pd
-import numpy as np
 import plotly.express as px
-import plotly.graph_objects as go
 import streamlit as st
 
-# --- Streamlit app ---
+#streamlit
 st.set_page_config(page_title="Music & Mental Health", layout="wide")
 st.title("🎵 Music & Mental Health Survey Analysis (Interactive Dashboard)")
 
-# --- Load dataset ---
+#load database
 df = pd.read_csv("mxmh_survey_results.csv")
 
-# --- Select relevant columns ---
+#select columns
 health_cols = ["Anxiety", "Depression", "Insomnia", "OCD"]
 genre_cols = [c for c in df.columns if c.startswith("Frequency [")]
 
-# Drop rows with missing key values
+#drop rows with missing key values
 df_clean = df.dropna(subset=health_cols + ["Hours per day", "Exploratory", "Music effects"])
 
-# Convert frequency & health columns to numeric
+#convert frequency and health columns to numeric
 df_clean[genre_cols] = df_clean[genre_cols].apply(pd.to_numeric, errors="coerce")
 df_clean[health_cols] = df_clean[health_cols].apply(pd.to_numeric, errors="coerce")
 
-# --- Create metrics ---
+#create metrics
 df_clean["Variety"] = (df_clean[genre_cols] > 0).sum(axis=1)
 df_clean["Avg_health"] = df_clean[health_cols].mean(axis=1)
 
-# --- Sidebar filters ---
+#sidebar filters
 st.sidebar.header("🧭 Filter Data")
 
-# Hours listening filter
+#hours listening
 min_hours, max_hours = int(df_clean["Hours per day"].min()), int(df_clean["Hours per day"].max())
 hours_range = st.sidebar.slider("🎚 Hours Listening per Day", min_hours, max_hours, (min_hours, max_hours))
 
-# Average health score filter
+#average health score
 min_health, max_health = float(df_clean["Avg_health"].min()), float(df_clean["Avg_health"].max())
 health_range = st.sidebar.slider("🧠 Average Mental Health Score", min_health, max_health, (min_health, max_health))
 
-# Genre filter
-selected_genres = st.sidebar.multiselect(
-    "🎵 Select Genres (for variety calculation)",
-    options=genre_cols,
-    default=genre_cols[:5]
-)
-
-# Filtered dataframe
+#dataframe
 filtered_df = df_clean[
     (df_clean["Hours per day"].between(hours_range[0], hours_range[1])) &
     (df_clean["Avg_health"].between(health_range[0], health_range[1]))
@@ -59,13 +50,11 @@ col1, col2 = st.columns(2)
 with col1:
     st.subheader("🎧 Hours Listening vs Mental Health")
 
-    x = filtered_df["Hours per day"]
-    y = filtered_df["Avg_health"]
-
     fig1 = px.scatter(
         filtered_df,
         x="Hours per day",
         y="Avg_health",
+        trendline="ols",
         opacity=0.6,
         color_discrete_sequence=["#1f77b4"],
         labels={
@@ -75,18 +64,6 @@ with col1:
         title="Does listening longer affect mental health?"
     )
     fig1.update_traces(marker=dict(size=7))
-
-    # Linear trendline
-    coeffs = np.polyfit(x, y, 1)
-    trendline_y = np.polyval(coeffs, x)
-    fig1.add_trace(go.Scatter(
-        x=x,
-        y=trendline_y,
-        mode='lines',
-        line=dict(color='red', width=2),
-        name='Linear Trendline'
-    ))
-
     st.plotly_chart(fig1, use_container_width=True)
 
 # -----------------------------------------
@@ -106,41 +83,4 @@ with col2:
     )
     fig2.update_layout(xaxis_tickangle=20)
     st.plotly_chart(fig2, use_container_width=True)
-
-# -----------------------------------------
-# 3. Variety of Genres vs Health
-# -----------------------------------------
-if selected_genres:
-    st.subheader("🎵 Variety of Genres vs Mental Health")
-
-    filtered_df["Selected_Variety"] = (filtered_df[selected_genres] > 0).sum(axis=1)
-
-    x_var = filtered_df["Selected_Variety"]
-    y_var = filtered_df["Avg_health"]
-
-    fig3 = px.scatter(
-        filtered_df,
-        x="Selected_Variety",
-        y="Avg_health",
-        opacity=0.6,
-        color_discrete_sequence=["#2ca02c"],
-        labels={
-            "Selected_Variety": "Number of Genres Listened To",
-            "Avg_health": "Average Mental Health Score"
-        },
-        title="Does listening to more genres affect mental health?"
-    )
-    fig3.update_traces(marker=dict(size=7))
-
-    # Linear trendline
-    coeffs_var = np.polyfit(x_var, y_var, 1)
-    trendline_var = np.polyval(coeffs_var, x_var)
-    fig3.add_trace(go.Scatter(
-        x=x_var,
-        y=trendline_var,
-        mode='lines',
-        line=dict(color='red', width=2),
-        name='Linear Trendline'
-    ))
-
     st.plotly_chart(fig3, use_container_width=True)
