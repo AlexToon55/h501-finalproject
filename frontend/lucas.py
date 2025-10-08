@@ -1,5 +1,7 @@
 import pandas as pd
+import numpy as np
 import plotly.express as px
+import plotly.graph_objects as go
 import streamlit as st
 
 # --- Streamlit app ---
@@ -57,11 +59,13 @@ col1, col2 = st.columns(2)
 with col1:
     st.subheader("🎧 Hours Listening vs Mental Health")
 
+    x = filtered_df["Hours per day"]
+    y = filtered_df["Avg_health"]
+
     fig1 = px.scatter(
         filtered_df,
         x="Hours per day",
         y="Avg_health",
-        trendline="ols",
         opacity=0.6,
         color_discrete_sequence=["#1f77b4"],
         labels={
@@ -71,6 +75,18 @@ with col1:
         title="Does listening longer affect mental health?"
     )
     fig1.update_traces(marker=dict(size=7))
+
+    # Linear trendline
+    coeffs = np.polyfit(x, y, 1)
+    trendline_y = np.polyval(coeffs, x)
+    fig1.add_trace(go.Scatter(
+        x=x,
+        y=trendline_y,
+        mode='lines',
+        line=dict(color='red', width=2),
+        name='Linear Trendline'
+    ))
+
     st.plotly_chart(fig1, use_container_width=True)
 
 # -----------------------------------------
@@ -99,11 +115,13 @@ if selected_genres:
 
     filtered_df["Selected_Variety"] = (filtered_df[selected_genres] > 0).sum(axis=1)
 
+    x_var = filtered_df["Selected_Variety"]
+    y_var = filtered_df["Avg_health"]
+
     fig3 = px.scatter(
         filtered_df,
         x="Selected_Variety",
         y="Avg_health",
-        trendline="ols",
         opacity=0.6,
         color_discrete_sequence=["#2ca02c"],
         labels={
@@ -113,4 +131,16 @@ if selected_genres:
         title="Does listening to more genres affect mental health?"
     )
     fig3.update_traces(marker=dict(size=7))
+
+    # Linear trendline
+    coeffs_var = np.polyfit(x_var, y_var, 1)
+    trendline_var = np.polyval(coeffs_var, x_var)
+    fig3.add_trace(go.Scatter(
+        x=x_var,
+        y=trendline_var,
+        mode='lines',
+        line=dict(color='red', width=2),
+        name='Linear Trendline'
+    ))
+
     st.plotly_chart(fig3, use_container_width=True)
