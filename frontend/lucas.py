@@ -66,6 +66,7 @@ with col1:
         x="Hours per day",
         y="Avg_health",
         opacity=0.6,
+        trendline=None,  # <-- explicitly disable trendline
         color_discrete_sequence=["#1f77b4"],
         labels={
             "Hours per day": "Hours Listening per Day",
@@ -107,6 +108,7 @@ if selected_genres:
         x="Selected_Variety",
         y="Avg_health",
         opacity=0.6,
+        trendline=None,  # <-- explicitly disable trendline
         color_discrete_sequence=["#2ca02c"],
         labels={
             "Selected_Variety": "Number of Genres Listened To",
