@@ -1,5 +1,5 @@
 import pandas as pd
-import plotly as px
+import plotly.express as px
 import streamlit as st
 
 #streamlit
@@ -114,5 +114,6 @@ if selected_genres:
     )
     fig3.update_traces(marker=dict(size=7))
     st.plotly_chart(fig3, use_container_width=True)
+
 
 
