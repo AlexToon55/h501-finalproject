@@ -30,7 +30,13 @@ class MoodAnalysis:
         self.df_clean = df
         return df
 
+
+
+
     # --- analyses for stretch goal ---
+    # I chose to use the spearman correlation approach for this. 
+    ## Spearman analysis, or Spearman's rank correlation analysis, is a non-parametric statistical test that measures the strength and direction of the monotonic (consistently increasing or decreasing) relationship between two ranked variables. 
+    ## It assesses how well the rank order of one variable corresponds to the rank order of another variable, making it useful for data that doesn't meet the linearity or normality assumptions of Pearson correlation, such as ordinal data or data with outliers
     def spearman_bpm_vs_scales(self) -> pd.DataFrame:
         df = self.df_clean if self.df_clean is not None else self.clean()
         measures = [m for m in ['Anxiety','Depression','Insomnia','OCD'] if m in df.columns]
@@ -40,6 +46,11 @@ class MoodAnalysis:
             rho = sub.corr(method='spearman').loc['BPM', m] if not sub.empty else float('nan')
             rows.append({'measure': m, 'n': len(sub), 'spearman_rho': round(float(rho), 3)})
         return pd.DataFrame(rows)
+
+
+    # Imrove table function - this function creates a table that ranks music genres based on the percentage of respondents who reported an "Improved" mood after listening to music in that genre.
+    # The table includes the rank, favorite genre, percentage of respondents reporting improved mood, and the number of respondents for each genre.
+    # The function filters out genres with fewer than a specified minimum number of respondents to ensure statistical significance.
 
     def improve_table(self, min_n: int = 30) -> pd.DataFrame:
         df = self.df_clean if self.df_clean is not None else self.clean()
