@@ -2,16 +2,12 @@ import pandas as pd
 import plotly.express as px
 import streamlit as st
 
-# --- Streamlit Setup ---
+# --- Streamlit app ---
 st.set_page_config(page_title="Music & Mental Health", layout="wide")
 st.title("🎵 Music & Mental Health Survey Analysis (Interactive Dashboard)")
 
 # --- Load dataset ---
-@st.cache_data
-def load_data():
-    return pd.read_csv("mxmh_survey_results.csv")
-
-df = load_data()
+df = pd.read_csv("mxmh_survey_results.csv")
 
 # --- Select relevant columns ---
 health_cols = ["Anxiety", "Depression", "Insomnia", "OCD"]
@@ -46,7 +42,7 @@ selected_genres = st.sidebar.multiselect(
     default=genre_cols[:5]
 )
 
-# Filter the dataframe
+# Filtered dataframe
 filtered_df = df_clean[
     (df_clean["Hours per day"].between(hours_range[0], hours_range[1])) &
     (df_clean["Avg_health"].between(health_range[0], health_range[1]))
@@ -56,7 +52,7 @@ filtered_df = df_clean[
 col1, col2 = st.columns(2)
 
 # -----------------------------------------
-# 1. Hours Listening vs Avg Health
+# 1. Hours Listening vs Average Health
 # -----------------------------------------
 with col1:
     st.subheader("🎧 Hours Listening vs Mental Health")
@@ -65,6 +61,7 @@ with col1:
         filtered_df,
         x="Hours per day",
         y="Avg_health",
+        trendline="ols",
         opacity=0.6,
         color_discrete_sequence=["#1f77b4"],
         labels={
@@ -77,7 +74,7 @@ with col1:
     st.plotly_chart(fig1, use_container_width=True)
 
 # -----------------------------------------
-# 2. Exploratory vs Music Effects
+# 2. Exploratory vs Reported Music Effects
 # -----------------------------------------
 with col2:
     st.subheader("🎶 Exploring New Genres vs Reported Effects")
@@ -95,7 +92,7 @@ with col2:
     st.plotly_chart(fig2, use_container_width=True)
 
 # -----------------------------------------
-# 3. Variety vs Health
+# 3. Variety of Genres vs Health
 # -----------------------------------------
 if selected_genres:
     st.subheader("🎵 Variety of Genres vs Mental Health")
@@ -106,6 +103,7 @@ if selected_genres:
         filtered_df,
         x="Selected_Variety",
         y="Avg_health",
+        trendline="ols",
         opacity=0.6,
         color_discrete_sequence=["#2ca02c"],
         labels={
