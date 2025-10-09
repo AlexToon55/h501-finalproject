@@ -1,4 +1,4 @@
-name: "h501finalproject"
+name: H501-finalproject
 dependencies:
   - python=3.12
   - pip
