@@ -83,4 +83,3 @@ with col2:
     )
     fig2.update_layout(xaxis_tickangle=20)
     st.plotly_chart(fig2, use_container_width=True)
-    st.plotly_chart(fig3, use_container_width=True)
