@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
+import plotly.express as px
 
 st.write("Streamlit supports a wide range of data visualizations, including [Plotly, Altair, and Bokeh charts](https://docs.streamlit.io/develop/api-reference/charts). 📊 And with over 20 input widgets, you can easily make your data interactive!")
 
@@ -39,3 +40,33 @@ genre_means = genre_means.sort_values("avg_score")
 
 st.subheader("Average Mental Health Scores by Music Genre")
 st.dataframe(genre_means)
+
+# Bar Plot
+fig = px.bar(
+    genre_means,
+    x="Fav genre",
+    y=["Anxiety", "Depression", "Insomnia"],
+    barmode="group",
+    title="Average Mental Health Scores by Music Genre",
+    labels={"value": "Average Score", "Fav genre": "Music Genre"}
+)
+
+fig.update_layout(xaxis_tickangle=-45)
+st.plotly_chart(fig)
+
+# Whisker Diagram - Single vs Multi Genre listeners
+mh_melted = subset.melt(id_vars="listening_type",
+                        value_vars=["Anxiety", "Depression", "Insomnia"],
+                        var_name="Condition", value_name="Score")
+
+fig = px.box(
+    mh_melted,
+    x="listening_type",
+    y="Score",
+    color="Condition",
+    title="Mental Health Outcomes: Single vs Multi-Genre Listeners",
+    labels={"listening_type": "Listening Style"}
+)
+
+st.plotly_chart(fig)
+
