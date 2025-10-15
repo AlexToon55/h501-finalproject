@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
+import plotly.express as px
 
 st.write("Streamlit supports a wide range of data visualizations, including [Plotly, Altair, and Bokeh charts](https://docs.streamlit.io/develop/api-reference/charts). 📊 And with over 20 input widgets, you can easily make your data interactive!")
 
@@ -17,3 +18,55 @@ if rolling_average:
 tab1, tab2 = st.tabs(["Chart", "Dataframe"])
 tab1.line_chart(data, height=250)
 tab2.dataframe(data, height=250, use_container_width=True)
+
+
+file_path = r"https://raw.githubusercontent.com/AlexToon55/h501-finalproject/refs/heads/main/data/mxmh_survey_results.csv"
+df = pd.read_csv(file_path)
+
+cols = ["Fav genre", "Anxiety", "Depression", "Insomnia"]
+subset = df[cols].dropna()
+
+# Compute mean values per genre
+genre_means = subset.groupby("Fav genre")[["Anxiety", "Depression", "Insomnia"]].mean()
+
+# Also compute a combined score
+genre_means["avg_score"] = genre_means.mean(axis=1)
+
+# Reset index for plotting
+genre_means = genre_means.reset_index()
+
+# Sort by avg_score
+genre_means = genre_means.sort_values("avg_score")
+
+st.subheader("Average Mental Health Scores by Music Genre")
+st.dataframe(genre_means)
+
+# Bar Plot
+fig = px.bar(
+    genre_means,
+    x="Fav genre",
+    y=["Anxiety", "Depression", "Insomnia"],
+    barmode="group",
+    title="Average Mental Health Scores by Music Genre",
+    labels={"value": "Average Score", "Fav genre": "Music Genre"}
+)
+
+fig.update_layout(xaxis_tickangle=-45)
+st.plotly_chart(fig)
+
+# Whisker Diagram - Single vs Multi Genre listeners
+mh_melted = subset.melt(id_vars="listening_type",
+                        value_vars=["Anxiety", "Depression", "Insomnia"],
+                        var_name="Condition", value_name="Score")
+
+fig = px.box(
+    mh_melted,
+    x="listening_type",
+    y="Score",
+    color="Condition",
+    title="Mental Health Outcomes: Single vs Multi-Genre Listeners",
+    labels={"listening_type": "Listening Style"}
+)
+
+st.plotly_chart(fig)
+
