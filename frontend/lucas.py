@@ -48,7 +48,7 @@ col1, col2 = st.columns(2)
 # 1. Hours Listening vs Average Health
 # -----------------------------------------
 with col1:
-    st.subheader("🎧 Hours Listening vs Mental Health")
+    st.subheader("Hours Listening vs Mental Health")
 
     fig1 = px.scatter(
         filtered_df,
@@ -70,7 +70,7 @@ with col1:
 # 2. Exploratory vs Reported Music Effects
 # -----------------------------------------
 with col2:
-    st.subheader("🎶 Exploring New Genres vs Reported Effects")
+    st.subheader("Exploring New Genres vs Reported Effects")
 
     fig2 = px.histogram(
         filtered_df,
@@ -83,3 +83,4 @@ with col2:
     )
     fig2.update_layout(xaxis_tickangle=20)
     st.plotly_chart(fig2, use_container_width=True)
+
