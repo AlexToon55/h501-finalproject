@@ -29,3 +29,4 @@ cython_debug/
 # project
 .env
 environment.yml
+env_app.yml
