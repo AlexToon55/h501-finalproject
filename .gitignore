@@ -30,4 +30,3 @@ cython_debug/
 .env
 environment.yml
 env_app.yml
-env_app.yml
