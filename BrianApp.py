@@ -3,9 +3,10 @@ import streamlit as st
 import pandas as pd
 from datetime import datetime
 import numpy as np
+import plotly.express as px
 
 # reading the csv
-df = pd.read_csv('mxmh_survey_results.csv')
+df = pd.read_csv('updateddf.csv')
 
 # setting the title
 st.title("Music's Effects on Mental Health Issues")
@@ -53,3 +54,51 @@ levels = ['0 (none)', '1 (low)', '2', '3', '4', '5', '6', \
 level = st.selectbox('Rating Level', levels)
 st.write(f'Selecting condition level: {level}')
 
+# creating a conditional graph
+st.subheader('TEST')
+if condition:
+    # Step 1: Filter rows where 'Music effects' is 'Improve'
+    filtered_df = df[df["Music effects"] == "Improve"]
+
+    # Step 2: Include rows where at least one condition is 5 or greater
+    condition_columns = ["Anxiety", "Depression", "Insomnia", "OCD"]
+    filtered_df = filtered_df[filtered_df[condition_columns].ge(5).any(axis=1)]
+
+    # Step 3: Extract music types with 'Very frequently'
+    frequency_columns = [col for col in df.columns if col.startswith("Frequency")]
+    music_type_conditions = filtered_df.melt(
+        id_vars=condition_columns + ["Music effects"], 
+        value_vars=frequency_columns, 
+        var_name="Music Type", 
+        value_name="Frequency"
+    )
+    music_type_conditions = music_type_conditions[music_type_conditions["Frequency"] == "Very frequently"]
+
+    # Step 4: Count occurrences by Music Type and Condition
+    music_type_conditions["Music Type"] = music_type_conditions["Music Type"].str.extract(r"\[(.*?)]")  # Extract music type
+    condition_counts = music_type_conditions.melt(
+        id_vars=["Music Type"], 
+        value_vars=condition_columns, 
+        var_name="Condition", 
+        value_name="Severity"
+    )
+    condition_counts = condition_counts[condition_counts["Severity"] >= 5]
+    result = condition_counts.groupby(["Music Type", "Condition"]).size().reset_index(name="Count")
+
+    # Filter the data based on selected conditions
+    filtered_result = result[result["Condition"].isin(condition)]
+
+    # Step 5: Create a grouped bar chart
+    fig = px.bar(
+        filtered_result,
+        x="Music Type",
+        y="Count",
+        color="Condition",
+        title="Conditions Improving by Listening to Music Types 'Very Frequently'",
+        labels={"Count": "Count of Conditions Improving", "Music Type": "Music Types", "Condition": "Condition"},
+        barmode="group",
+        text="Count"
+    )
+
+    # Display the chart
+    st.plotly_chart(fig)
