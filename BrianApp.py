@@ -13,7 +13,6 @@ st.title("Music's Effects on Mental Health Issues")
 # setting an image
 st.image('MentalHealth.jpg', width = 700)
 
-
 # setting the first input
 st.header('Select Your Age Group')
 age_groups = ['10-15', '16-20', '21-30', '31-40', '41-50', '51-60', '60+']
@@ -41,5 +40,16 @@ listening_options = ['Less than 1 hour', '1 - 2 hours', '2 - 3 hours', \
 daily_listening = st.selectbox('Listening Hours', listening_options)
 st.write(f'Selected daily listening amount: {daily_listening}')
 
+# setting mental health condition
+st.header('Mental Health Condition')
+conditions = ['Anxiety', 'Depression', 'Insomnia', 'OCD']
+condition = st.multiselect('Condition', conditions)
+st.write(f'Selected condition(s): {', '. join(condition)}')
 
+# setting condition rating subheader
+st.subheader('Condition Rating')
+levels = ['0 (none)', '1 (low)', '2', '3', '4', '5', '6', \
+    '7', '8', '9', '10 (high)']
+level = st.selectbox('Rating Level', levels)
+st.write(f'Selecting condition level: {level}')
 
