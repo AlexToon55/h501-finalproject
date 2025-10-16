@@ -137,12 +137,13 @@ selections = {
 # setting the header for the selected options
 st.header('Selected Options')
 
-# Converting the Prediction Data to a Dataframe
+# converting the Prediction Data to a Dataframe
 selections_df = pd.DataFrame(selections.items(), columns = ['Option', 'Selection'])
 
-# Generate HTML table without the index
+# generate HTML table without the index
 table_html = selections_df.to_html(index=False, classes="table", border=0)
 
+# setting html table options
 st.markdown(
     """
     <style>
@@ -157,12 +158,26 @@ st.markdown(
     }
     .table th {
         background-color: #f2f2f2;
+        color: #333; /* Darker text color for better readability */
+        font-weight: bold;
+        font-size: 16px; /* Adjust font size */
+    }
+    .stMarkdown h2 {
+        color: #333; /* Match header color to table styling */
+        font-weight: bold;
+        font-size: 24px;
+        margin-bottom: 15px; /* Add spacing below the header */
     }
     </style>
     """,
     unsafe_allow_html=True,
 )
 
-# Render the table
+# render the table
 st.markdown(table_html, unsafe_allow_html=True)
 
+# setting the recommendations
+st.header('Recommendations')
+condition_text = ", ".join(condition) if condition else "your mental health conditions"
+st.subheader(f'Based on your selections, if you listen to {selected_genres} frequently, \
+         it may help with your {condition_text}')
