@@ -9,10 +9,10 @@ import plotly.express as px
 df = pd.read_csv('updateddf.csv')
 
 # setting the title
-st.title("Music's Effects on Mental Health Issues")
+st.title("Music and Mental Health")
 
 # setting an image
-st.image('MentalHealth.jpg', width = 700)
+st.image('MentalHealth.jpg', width = 500)
 
 # setting the age group
 st.header('Select Your Age Group')
@@ -41,11 +41,11 @@ listening_options = ['Less than 1 hour', '1 - 2 hours', '2 - 3 hours', \
 daily_listening = st.selectbox('Listening Hours', listening_options)
 st.write(f'Selected daily listening amount: {daily_listening}')
 if daily_listening in ['Less than 1 hour', '1 - 2 hours']:
-    listening_frequency = 'infrequently'
+    listening_frequency = 'Infrequently'
 elif daily_listening in ['2 - 3 hours', '3 - 4 hours']:
-    listening_frequency = 'frequently'
+    listening_frequency = 'Frequently'
 else:
-    listening_frequency = 'very frequently'
+    listening_frequency = 'Very frequently'
 selected_genres = ', '.join(genre)  # Convert list to comma-separated string
 st.write(f'Based on your selection, you listen to {selected_genres}: {listening_frequency}')
 
@@ -55,24 +55,30 @@ conditions = ['Anxiety', 'Depression', 'Insomnia', 'OCD']
 condition = st.multiselect('Condition', conditions)
 st.write(f'Selected condition(s): {', '. join(condition)}')
 
-# setting condition rating subheader
-st.subheader('Condition Rating')
-levels = ['0 (none)', '1 (low)', '2', '3', '4', '5', '6', \
-    '7', '8', '9', '10 (high)']
-level = st.selectbox('Rating Level', levels)
-st.write(f'Selecting condition level: {level}')
+# Create sliders dynamically for each selected condition
+condition_ratings = {}
+for cond in condition:
+    rating = st.slider(f'Rate your {cond} level (0 = none, 10 = high)', 
+                       min_value=0, max_value=10, value=5)
+    condition_ratings[cond] = rating
+
+# Display the condition ratings
+if condition_ratings:
+    st.write("Your condition ratings:")
+    for cond, rating in condition_ratings.items():
+        st.write(f"{cond}: {rating}")
 
 # creating a conditional graph
 st.header("Music Types' Effect on Conditions")
 if condition:
-    # Step 1: Filter rows where 'Music effects' is 'Improve'
+    # filter rows where 'Music effects' is 'Improve'
     filtered_df = df[df["Music effects"] == "Improve"]
 
-    # Step 2: Include rows where at least one condition is 5 or greater
+    # include rows where at least one condition is 5 or greater
     condition_columns = ["Anxiety", "Depression", "Insomnia", "OCD"]
     filtered_df = filtered_df[filtered_df[condition_columns].ge(5).any(axis=1)]
 
-    # Step 3: Extract music types with 'Very frequently'
+    # extract music types with 'Very frequently'
     frequency_columns = [col for col in df.columns if col.startswith("Frequency")]
     music_type_conditions = filtered_df.melt(
         id_vars=condition_columns + ["Music effects"], 
@@ -82,7 +88,7 @@ if condition:
     )
     music_type_conditions = music_type_conditions[music_type_conditions["Frequency"] == "Very frequently"]
 
-    # Step 4: Count occurrences by Music Type and Condition
+    # count occurrences by Music Type and Condition
     music_type_conditions["Music Type"] = music_type_conditions["Music Type"].str.extract(r"\[(.*?)]")  # Extract music type
     condition_counts = music_type_conditions.melt(
         id_vars=["Music Type"], 
@@ -93,10 +99,10 @@ if condition:
     condition_counts = condition_counts[condition_counts["Severity"] >= 5]
     result = condition_counts.groupby(["Music Type", "Condition"]).size().reset_index(name="Count")
 
-    # Filter the data based on selected conditions
+    # filter the data based on selected conditions
     filtered_result = result[result["Condition"].isin(condition)]
 
-    # Step 5: Create a grouped bar chart
+    # create a grouped bar chart
     fig = px.bar(
         filtered_result,
         x="Music Type",
@@ -108,9 +114,10 @@ if condition:
         text="Count"
     )
 
-    # Display the chart
+    # display the chart
     st.plotly_chart(fig)
 
+# creating a dictionary to display selections
 selections = {
     'Age Group': age_group,
     'Favorite Music Genre(s)': genre,
@@ -118,11 +125,44 @@ selections = {
     'Daily Listening': daily_listening,
     'Listening Frequency': listening_frequency,
     'Mental Health Condition': condition,
-    'Condition Rating': level,
+    'Condition Rating': ', '.join([f"{k}: {v}" for k, v in condition_ratings.items()]),
 }
 
-# converting the selections to a dataframe
-selections_df = pd.DataFrame(selections.items(), columns = ['Option', 'Selection'])
+# removing the brackets from the selections dictionary
+selections = {
+    key: ', '.join(value) if isinstance(value, list) else value
+    for key, value in selections.items()
+}
 
 # setting the header for the selected options
 st.header('Selected Options')
+
+# Converting the Prediction Data to a Dataframe
+selections_df = pd.DataFrame(selections.items(), columns = ['Option', 'Selection'])
+
+# Generate HTML table without the index
+table_html = selections_df.to_html(index=False, classes="table", border=0)
+
+st.markdown(
+    """
+    <style>
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    .table th, .table td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+    .table th {
+        background-color: #f2f2f2;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
+# Render the table
+st.markdown(table_html, unsafe_allow_html=True)
+
