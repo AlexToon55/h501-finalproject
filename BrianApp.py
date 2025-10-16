@@ -40,7 +40,7 @@ listening_options = ['Less than 1 hour', '1 - 2 hours', '2 - 3 hours', \
     '3 - 4 hours', '4 - 5 hours', '5 - 6 hours', '7 or more hours']
 daily_listening = st.selectbox('Listening Hours', listening_options)
 st.write(f'Selected daily listening amount: {daily_listening}')
-if daily_listening in ['less than 1 hour', '1 - 2 hours']:
+if daily_listening in ['Less than 1 hour', '1 - 2 hours']:
     listening_frequency = 'infrequently'
 elif daily_listening in ['2 - 3 hours', '3 - 4 hours']:
     listening_frequency = 'frequently'
