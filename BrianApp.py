@@ -27,3 +27,17 @@ sorted_genres = sorted(genres)
 genre = st.selectbox('Music Genres', sorted_genres)
 st.write(f'Selected genre: {genre}')
 
+# setting music listening service
+st.header('Source of Music')
+services = df['Primary streaming service'].dropna().unique()
+sorted_services = sorted(services)
+service = st.selectbox('Music Service', sorted_services)
+st.write(f'Selected service: {service}')
+
+# setting music listening frequency
+st.header('Daily Music Listening Frequency')
+listening_options = ['Less than 1 hour', '1 - 2 hours', '2 - 3 hours', \
+    '3 - 4 hours', '4 - 5 hours', '5 - 6 hours', '7 or more hours']
+daily_listening = st.selectbox('Listening Hours', listening_options)
+st.write(f'Selected daily listening amount: {daily_listening}')
+
