@@ -126,29 +126,3 @@ selections_df = pd.DataFrame(selections.items(), columns = ['Option', 'Selection
 
 # setting the header for the selected options
 st.header('Selected Options')
-
-# generating html table without the index
-table_html = selections_df.to_html(index=False, classes="table", border=0)
-
-st.markdown(
-    """
-    <style>
-    .table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-    .table th, .table td {
-        border: 1px solid #ddd;
-        padding: 8px;
-        text-align: left;
-    }
-    .table th {
-        background-color: #f2f2f2;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True,
-)
-
-# render the table
-st.markdown(table_html, unsafe_allowed_html=True)
