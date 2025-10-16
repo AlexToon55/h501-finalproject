@@ -55,7 +55,7 @@ level = st.selectbox('Rating Level', levels)
 st.write(f'Selecting condition level: {level}')
 
 # creating a conditional graph
-st.subheader('TEST')
+st.header("Music Types' Effect on Conditions")
 if condition:
     # Step 1: Filter rows where 'Music effects' is 'Improve'
     filtered_df = df[df["Music effects"] == "Improve"]
@@ -102,3 +102,4 @@ if condition:
 
     # Display the chart
     st.plotly_chart(fig)
+
