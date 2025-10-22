@@ -1,6 +1,7 @@
 import pandas as pd
 import plotly.express as px
 import streamlit as st
+import numpy as np
 
 # --- Streamlit Setup ---
 st.set_page_config(page_title="Music & Mental Health", layout="wide")
@@ -12,7 +13,7 @@ df = pd.read_csv("Data_Science_Survey.csv")
 # --- Identify Key Columns ---
 health_cols = [c for c in df.columns if any(x in c for x in ["Anxiety", "Depression", "Insomnia", "OCD"])]
 genre_cols = [c for c in df.columns if c.startswith("Frequency [")]
-bpm_col = "BPM" if "BPM" in df.columns else None  # modify if column name differs
+bpm_col = "BPM" if "BPM" in df.columns else None  # adjust if your BPM column name differs
 
 # --- Clean and Prepare Data ---
 df_clean = df.dropna(subset=health_cols + ["Hours per day", "Exploratory", "Music effects"])
@@ -35,8 +36,9 @@ health_range = st.sidebar.slider("🧠 Average Mental Health Score", min_health,
 
 # BPM filter (only if BPM exists)
 if bpm_col and bpm_col in df_clean.columns:
-    min_bpm, max_bpm = int(df_clean[bpm_col].min()), int(df_clean[bpm_col].max())
-    bpm_range = st.sidebar.slider("🎵 BPM (Beats Per Minute)", min_bpm, max_bpm, (min_bpm, max_bpm))
+    bpm_min = int(df_clean[bpm_col].min())
+    bpm_max = int(min(df_clean[bpm_col].max(), 250))  # cap BPM at 250
+    bpm_range = st.sidebar.slider("🎵 BPM (Beats Per Minute)", bpm_min, bpm_max, (bpm_min, bpm_max))
 else:
     bpm_range = None
 
@@ -83,7 +85,7 @@ with col2:
     fig2.update_layout(xaxis_tickangle=20)
     st.plotly_chart(fig2, use_container_width=True)
 
-# --- 3. BPM vs Mental Health (Scatter + Box Plot) ---
+# --- 3. BPM vs Mental Health (Scatter + Adaptive Box Plot) ---
 st.subheader("🎚 Relationship Between BPM and Mental Health")
 
 if bpm_col and bpm_col in filtered_df.columns:
@@ -103,23 +105,27 @@ if bpm_col and bpm_col in filtered_df.columns:
     fig3.update_traces(marker=dict(size=8))
     st.plotly_chart(fig3, use_container_width=True)
 
-    # Box plot
+    # Adaptive BPM bins (based on quantiles)
     st.markdown("#### 🔹 Box Plot: Mental Health Across BPM Ranges")
-    bins = [0, 80, 100, 120, 140, 200]
-    labels = ["Slow (<80)", "Medium (80–100)", "Moderate (100–120)", "Fast (120–140)", "Very Fast (>140)"]
-    filtered_df["BPM_Range"] = pd.cut(filtered_df[bpm_col], bins=bins, labels=labels, include_lowest=True)
+    num_bins = 5
+    try:
+        bins = np.quantile(filtered_df[bpm_col].dropna(), np.linspace(0, 1, num_bins + 1))
+        bins = np.unique(np.clip(bins, None, 250))  # ensure within 250 limit
+        labels = [f"{int(bins[i])}-{int(bins[i+1])}" for i in range(len(bins) - 1)]
+        filtered_df["BPM_Range"] = pd.cut(filtered_df[bpm_col], bins=bins, labels=labels, include_lowest=True)
 
-    fig4 = px.box(
-        filtered_df,
-        x="BPM_Range",
-        y="Avg_health",
-        color="BPM_Range",
-        title="Mental Health Scores Across BPM Ranges",
-        labels={"BPM_Range": "Tempo Range", "Avg_health": "Average Mental Health Score"},
-        color_discrete_sequence=px.colors.qualitative.Set3
-    )
-    fig4.update_layout(showlegend=False)
-    st.plotly_chart(fig4, use_container_width=True)
-
+        fig4 = px.box(
+            filtered_df,
+            x="BPM_Range",
+            y="Avg_health",
+            color="BPM_Range",
+            title="Mental Health Scores Across BPM Ranges (Adaptive Quantiles)",
+            labels={"BPM_Range": "Tempo Range (BPM)", "Avg_health": "Average Mental Health Score"},
+            color_discrete_sequence=px.colors.qualitative.Set3
+        )
+        fig4.update_layout(showlegend=False)
+        st.plotly_chart(fig4, use_container_width=True)
+    except Exception as e:
+        st.warning(f"⚠️ Could not compute BPM bins: {e}")
 else:
     st.info("⚠️ BPM data not found in this dataset.")
