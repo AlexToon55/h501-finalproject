@@ -1,9 +1,18 @@
-# importing the libraries
+import modules.bootstrap
+from modules.app_core import config, survey, page_header
+from modules.nav import sidebar
 import streamlit as st
+
+# importing the libraries just for this page
 import pandas as pd
 from datetime import datetime
 import numpy as np
 import plotly.express as px
+
+config("Brian") # sets the page title and icon
+sidebar() # add any extra sidebar elements here
+df = survey() # load and cache the dataset
+page_header("Brian")
 
 # reading the csv
 df = pd.read_csv('updateddf.csv')
