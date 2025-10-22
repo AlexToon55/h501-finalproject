@@ -84,3 +84,51 @@ with col2:
     fig2.update_layout(xaxis_tickangle=20)
     st.plotly_chart(fig2, use_container_width=True)
 
+# -----------------------------------------
+# 3. BPM vs Mental Health Visualization
+# -----------------------------------------
+st.subheader("🎚 Relationship Between BPM and Mental Health")
+
+if "BPM" in filtered_df.columns:
+    # --- Scatter Plot: BPM vs Avg Health ---
+    st.markdown("#### 🔹 Scatter: Does faster music correlate with better or worse mental health?")
+    fig3 = px.scatter(
+        filtered_df,
+        x="BPM",
+        y="Avg_health",
+        color="Exploratory",
+        trendline="ols",
+        opacity=0.7,
+        title="BPM (Beats Per Minute) vs Average Mental Health",
+        labels={
+            "BPM": "Beats Per Minute (Preferred Tempo)",
+            "Avg_health": "Average Mental Health Score",
+            "Exploratory": "Explores New Genres"
+        },
+        color_discrete_sequence=px.colors.qualitative.Pastel
+    )
+    fig3.update_traces(marker=dict(size=8))
+    st.plotly_chart(fig3, use_container_width=True)
+
+    # --- Box Plot: Group BPM ranges ---
+    st.markdown("#### 🔹 Box Plot: Mental Health Across BPM Ranges")
+
+    # Define BPM categories for visualization
+    bins = [0, 80, 100, 120, 140, 200]
+    labels = ["Slow (<80)", "Medium (80–100)", "Moderate (100–120)", "Fast (120–140)", "Very Fast (>140)"]
+    filtered_df["BPM_Range"] = pd.cut(filtered_df["BPM"], bins=bins, labels=labels, include_lowest=True)
+
+    fig4 = px.box(
+        filtered_df,
+        x="BPM_Range",
+        y="Avg_health",
+        color="BPM_Range",
+        title="Mental Health Scores Across BPM Ranges",
+        labels={"BPM_Range": "Tempo Range", "Avg_health": "Average Mental Health Score"},
+        color_discrete_sequence=px.colors.qualitative.Set3
+    )
+    fig4.update_layout(showlegend=False)
+    st.plotly_chart(fig4, use_container_width=True)
+
+else:
+    st.info("⚠️ BPM data not found in this dataset.")
