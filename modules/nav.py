@@ -9,7 +9,7 @@ def sidebar():
 
     with st.sidebar:
         if img.exists():
-            st.image(str(img), use_column_width=True)
+            st.image(str(img), width="stretch")
 
         st.sidebar.markdown("Music & Mental Health")
         st.sidebar.caption("Group 4 - H501 Final Project")
