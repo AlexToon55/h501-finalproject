@@ -1,19 +1,19 @@
+from pathlib import Path
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
 import streamlit as st
-import pandas as pd
-import numpy as np
+from modules.app_core import config, survey, page_header, kpis
+from modules.nav import sidebar
 
-st.write("Streamlit supports a wide range of data visualizations, including [Plotly, Altair, and Bokeh charts](https://docs.streamlit.io/develop/api-reference/charts). 📊 And with over 20 input widgets, you can easily make your data interactive!")
 
-all_users = ["Alice", "Bob", "Charly"]
-with st.container(border=True):
-    users = st.multiselect("Users", all_users, default=all_users)
-    rolling_average = st.toggle("Rolling average")
+config("Home") # sets the page title and icon
+sidebar() # add any extra sidebar elements here
+df = survey() # load and cache the dataset
 
-np.random.seed(42)
-data = pd.DataFrame(np.random.randn(20, len(users)), columns=users)
-if rolling_average:
-    data = data.rolling(7).mean().dropna()
+# header 
+page_header("Home")
+st.write("All pages share the same dataset, loaded and cached at the app level:")
+st.dataframe(df.head(20), use_container_width=True)
 
-tab1, tab2 = st.tabs(["Chart", "Dataframe"])
-tab1.line_chart(data, height=250)
-tab2.dataframe(data, height=250, use_container_width=True)
+kpis(df)
