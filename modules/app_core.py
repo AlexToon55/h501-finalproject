@@ -11,7 +11,10 @@ def config(page_title: str):
 def survey():
     """ Load and cache the survey dataset. then activate streamlit once the page has called set_page_config """
     import streamlit as st
-    return st.cache_data(load_survey)()
+    @st.cache_data
+    def _load():
+        return st.cache_data(load_survey)()
+    return _load()
 
 def page_header(title: str):
     """ Display a standardized page header. """
