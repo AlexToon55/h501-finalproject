@@ -5,7 +5,7 @@ import numpy as np
 
 #streamlit setup
 st.set_page_config(page_title="Music & Mental Health", layout="wide")
-st.title("🎵 Music & Mental Health Survey Analysis (Interactive Dashboard)")
+st.title("Music & Mental Health Survey Analysis (Interactive Dashboard)")
 
 #load dataset
 df = pd.read_csv("Data_Science_Survey.csv")
@@ -143,3 +143,4 @@ if bpm_col and bpm_col in filtered_df.columns:
 
 else:
     st.info("⚠️ BPM data not found in this dataset.")
+
