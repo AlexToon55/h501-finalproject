@@ -5,6 +5,59 @@ from datetime import datetime
 import numpy as np
 import plotly.express as px
 
+# -----------------------------
+# Page Config & Animated Background
+# -----------------------------
+st.set_page_config(page_title="Music and Mental Health", layout="wide")
+
+# Animated falling music notes and brains
+st.markdown("""
+<style>
+@keyframes fall {
+  0% { transform: translateY(-50px) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(700px) rotate(360deg); opacity: 0; }
+}
+
+/* Common animation style */
+.emoji {
+  position: absolute;
+  top: -50px;
+  font-size: 28px;
+  animation: fall linear infinite;
+}
+
+/* Individual emoji positions and speeds */
+.note1 { left: 5%; animation-duration: 4s; }
+.note2 { left: 20%; animation-duration: 5s; }
+.note3 { left: 35%; animation-duration: 6s; }
+.note4 { left: 55%; animation-duration: 4.5s; }
+.note5 { left: 70%; animation-duration: 5.5s; }
+.note6 { left: 85%; animation-duration: 6.5s; }
+
+.brain1 { left: 10%; animation-duration: 5.2s; }
+.brain2 { left: 30%; animation-duration: 6.8s; }
+.brain3 { left: 50%; animation-duration: 5.7s; }
+.brain4 { left: 65%; animation-duration: 7s; }
+.brain5 { left: 80%; animation-duration: 6.2s; }
+</style>
+
+<!-- Falling Music Notes -->
+<div class="emoji note1">🎵</div>
+<div class="emoji note2">🎶</div>
+<div class="emoji note3">🎵</div>
+<div class="emoji note4">🎶</div>
+<div class="emoji note5">🎵</div>
+<div class="emoji note6">🎶</div>
+
+<!-- Falling Brains -->
+<div class="emoji brain1">🧠</div>
+<div class="emoji brain2">🧠</div>
+<div class="emoji brain3">🧠</div>
+<div class="emoji brain4">🧠</div>
+<div class="emoji brain5">🧠</div>
+""", unsafe_allow_html=True)
+
+
 # reading the csv
 df = pd.read_csv('updateddf.csv')
 
