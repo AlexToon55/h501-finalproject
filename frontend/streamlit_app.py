@@ -12,7 +12,7 @@ sidebar() # add any extra sidebar elements here
 df = survey() # load and cache the dataset
 
 # header 
-page_header("Home Test")
+page_header("Home")
 st.write("All pages share the same dataset, loaded and cached at the app level:")
 st.dataframe(df.head(20), use_container_width=True)
 
