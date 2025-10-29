@@ -1,3 +1,17 @@
+import modules.bootstrap
+from modules.app_core import config, survey, page_header
+from modules.nav import sidebar
+import streamlit as st
+
+config("Brian") # sets the page title and icon
+sidebar() # add any extra sidebar elements here
+# df = survey() # load and cache the dataset
+page_header("Brian")
+
+def page_brian():
+    st.header("Brian's Analysis")
+    # st.info("This page is under construction.")
+
 # importing the libraries
 import streamlit as st
 import pandas as pd
