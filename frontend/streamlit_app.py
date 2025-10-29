@@ -17,3 +17,11 @@ st.write("All pages share the same dataset, loaded and cached at the app level:"
 st.dataframe(df.head(20), use_container_width=True)
 
 kpis(df)
+
+# Set the page configuration with dark mode
+st.set_page_config(
+    page_title="Music and Mental Health",
+    page_icon="🌙",  # Optional: Set a page icon
+    layout="centered",  # Options: "centered" or "wide"
+    initial_sidebar_state="expanded"  # Options: "expanded" or "collapsed"
+)
