@@ -23,11 +23,11 @@ tab2.dataframe(data, height=250, use_container_width=True)
 file_path = r"https://raw.githubusercontent.com/AlexToon55/h501-finalproject/refs/heads/main/data/mxmh_survey_results.csv"
 df = pd.read_csv(file_path)
 
-cols = ["Fav genre", "Anxiety", "Depression", "Insomnia"]
+cols = ["Fav genre", "Anxiety", "Depression", "Insomnia","OCD"]
 subset = df[cols].dropna()
 
 # Compute mean values per genre
-genre_means = subset.groupby("Fav genre")[["Anxiety", "Depression", "Insomnia"]].mean()
+genre_means = subset.groupby("Fav genre")[["Anxiety", "Depression", "Insomnia","OCD"]].mean()
 
 # Also compute a combined score
 genre_means["avg_score"] = genre_means.mean(axis=1)
@@ -45,7 +45,7 @@ st.dataframe(genre_means)
 fig = px.bar(
     genre_means,
     x="Fav genre",
-    y=["Anxiety", "Depression", "Insomnia"],
+    y=["Anxiety", "Depression", "Insomnia","OCD"],
     barmode="group",
     title="Average Mental Health Scores by Music Genre",
     labels={"value": "Average Score", "Fav genre": "Music Genre"}
@@ -56,7 +56,7 @@ st.plotly_chart(fig)
 
 # Whisker Diagram - Single vs Multi Genre listeners
 mh_melted = subset.melt(id_vars="listening_type",
-                        value_vars=["Anxiety", "Depression", "Insomnia"],
+                        value_vars=["Anxiety", "Depression", "Insomnia","OCD"],
                         var_name="Condition", value_name="Score")
 
 fig = px.box(
