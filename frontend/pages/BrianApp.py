@@ -2,6 +2,8 @@ import modules.bootstrap
 from modules.app_core import config, survey, page_header
 from modules.nav import sidebar
 import streamlit as st
+from pathlib import Path
+from modules.assets import links_from_secrets
 
 # importing the libraries just for this page
 import pandas as pd
@@ -22,7 +24,13 @@ df = survey()
 st.title("Music and Mental Health")
 
 # setting an image
-st.image('MentalHealth.jpg', width = 500)
+img_url = links_from_secrets("MentalHealthImage")
+local = Path(__file__).resolve().parents[1] / "frontend" / "assets" / "MentalHealth.jpg"
+
+if img_url:
+    st.image( img_url, width = 500)
+elif local.exists():
+    st.image(str(local), width = 500)
 
 # setting the age group
 st.header('Select Your Age Group')
