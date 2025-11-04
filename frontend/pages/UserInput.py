@@ -13,3 +13,12 @@ sidebar() # add any extra sidebar elements here
 # df = survey() # load and cache the dataset
 page_header("Give Your Feedback")
 
+# reading the csv
+df = pd.read_csv('updateddf.csv')
+
+# setting the title
+st.title("How Has Music Impacted You?")
+
+# setting an image
+st.image('mental-health-blog.jpg', width = 500)
+
