@@ -23,10 +23,14 @@ st.title("How Has Music Impacted You?")
 st.image('mental-health-blog.jpg', width = 500)
 
 # setting the age group
-st.header('Select Your Age Group')
-age_groups = ['10-15', '16-20', '21-30', '31-40', '41-50', '51-60', '60+']
-age_group = st.selectbox('Age Group', age_groups)
-st.write(f'Selected age group: {age_group}')
+st.header('Enter Your Age Group')
+age = st.number_input('Age', min_value=1, max_value=100, step=1)
+# Check if age is valid (Streamlit’s number_input already restricts range)
+if 1 <= age <= 100:
+    st.write(f'Your age is: {age}')
+else:
+    st.error('Please enter a valid age between 1 and 100.')
+st.write(f'Selected age is: {age}')
 
 # setting favorite music type
 st.header('What is Your Favorite Music Genre?')
