@@ -37,7 +37,7 @@ st.header('What is Your Favorite Music Genre?')
 genres = df['Fav genre'].unique()
 sorted_genres = sorted(genres)
 genre = st.selectbox('Music Genres', sorted_genres)
-st.write(f"Selected genre: {', '.join(genre)}")
+st.write(f"Selected genre: {genre}')
 
 # setting music listening service
 st.header('Source of Music')
