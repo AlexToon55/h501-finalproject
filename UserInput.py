@@ -22,8 +22,8 @@ st.title("How Has Music Impacted You?")
 # setting an image
 st.image('mental-health-blog.jpg', width = 500)
 
-# setting the age group
-st.header('Enter Your Age Group')
+# setting the age entry
+st.header('Enter Your Age')
 age = st.number_input('Age', min_value=1, max_value=100, step=1)
 # Check if age is valid (Streamlit’s number_input already restricts range)
 if 1 <= age <= 100:
@@ -36,8 +36,8 @@ st.write(f'Selected age is: {age}')
 st.header('What is Your Favorite Music Genre?')
 genres = df['Fav genre'].unique()
 sorted_genres = sorted(genres)
-genre = st.multiselect('Music Genres', sorted_genres)
-st.write(f"Selected genre(s): {', '.join(genre)}")
+genre = st.selectbox('Music Genres', sorted_genres)
+st.write(f"Selected genre: {', '.join(genre)}")
 
 # setting music listening service
 st.header('Source of Music')
