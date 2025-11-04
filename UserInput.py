@@ -43,8 +43,8 @@ st.write(f'Selected genre: {genre}')
 st.header('Source of Music')
 services = df['Primary streaming service'].dropna().unique()
 sorted_services = sorted(services)
-service = st.multiselect('Music Service', sorted_services)
-st.write(f"Selected service(s): {', '.join(service)}")
+service = st.selectbox('Music Service', sorted_services)
+st.write(f"Selected service: {', '.join(service)}")
 
 # setting music listening frequency
 st.header('Daily Music Listening Frequency')
