@@ -3,12 +3,14 @@ import plotly.express as px
 import streamlit as st
 import numpy as np
 
+
 #streamlit setup
 st.set_page_config(page_title="Music & Mental Health", layout="wide")
 st.title("Music & Mental Health Survey Analysis (Interactive Dashboard)")
 
 #load dataset
-df = pd.read_csv("Data_Science_Survey.csv")
+from modules.app_core import survey
+df = survey()
 
 #identify key columns
 health_cols = [c for c in df.columns if any(x in c for x in ["Anxiety", "Depression", "Insomnia", "OCD"])]
