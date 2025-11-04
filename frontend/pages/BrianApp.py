@@ -15,7 +15,8 @@ df = survey() # load and cache the dataset
 page_header("Brian")
 
 # reading the csv
-df = pd.read_csv('updateddf.csv')
+from modules.app_core import survey
+df = survey()
 
 # setting the title
 st.title("Music and Mental Health")

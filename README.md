@@ -23,3 +23,31 @@ pip freeze > requirements.txt
 
 ## PROD Environment URL: https://h501-finalproject.streamlit.app/
 ## TOON Environment URL: https://h501-finalproject-xstblhshf5njjr4pzqzcfm.streamlit.app/
+
+
+
+## Project Tree
+/h501-finalproject
+├── data/
+│   └── Data_Science_Survey.csv
+├── frontend/
+│   ├── assets/
+│   ├── pages/
+│   │   ├── BrianApp.py
+│   │   ├── Interactive.py
+│   │   └── Mood_Analyser.py
+│   ├── requirements.txt
+│   └── streamlit_app.py
+├── modules/
+│   ├── __init__.py
+│   ├── app_core.py
+│   ├── assets.py
+│   ├── bootstrap.py
+│   ├── BrianApp.py
+│   ├── dataset.py
+│   ├── mood.py
+│   └── nav.py
+├── env_app.yml
+├── README.md
+├── requirements.txt
+└── scratch area.ipynb

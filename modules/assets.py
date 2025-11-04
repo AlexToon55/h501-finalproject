@@ -1,29 +1,20 @@
 from __future__ import annotations
 import re
 from urllib.parse import urlparse, parse_qs
+import streamlit as st
 
 
-
-def _gdrive_download(url: str | None) -> str | None:
-    """ Convert a Google Drive sharing URL to a direct download URL. """
-    if not url or "drive.google.com" not in url:
+def _gdrive_download(url: str) -> str:
+    ''' Convert a Google Drive sharing URL to a direct download link.'''
+    if not url:
         return url
+    m = re.search(r"/d/([a-zA-Z0-9_-]+)", url) or re.search(r"[?&]id=([a-zA-Z0-9_-]+)", url)
 
-    marker = "/file/d/"
+    return f"https://drive.google.com/uc?export=download&id={m.group(1)}" if m else url
     
-    if marker in url:
-        file_id = url.split(marker, 1)[1].split("/", 1)[0]
-        return f"https://drive.google.com/uc?export=download&id={file_id}"
-
-    if "open?id=" in url:
-        file_id = url.split("open?id=", 1)[1].split("&", 1)[0]
-        return f"https://drive.google.com/uc?export=download&id={file_id}"
-    return url
 
 def links_from_secrets(key: str) -> str | None:
-    try: 
-        import streamlit as st
-        raw_links = st.secrets.get(key)
-    except Exception:
-        return None
-    return _gdrive_download(raw_links) if isinstance(raw_links, str) else None
+    ''' Retrieve and convert a link from Streamlit secrets.'''
+    import streamlit as st
+    val = st.secrets.get(key, None)
+    return _gdrive_download(val) if val else None
