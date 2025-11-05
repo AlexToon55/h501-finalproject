@@ -85,8 +85,8 @@ st.header('How has music impacted your mental health?')
 st.subheader('Please choose one of the following:')
 improvement_level = ['No effect', 'Slightly improved', 'Greatly Improved',\
     'Worsened']
-st.selectbox("Music's Effect on your Mental Health:", improvement_level)
-
+improvement_choice = st.selectbox("Music's Effect on your Mental Health:", improvement_level)
+st.write(f'You chose:, {improvement_choice}')
 
 # creating a dictionary to display selections
 selections = {
