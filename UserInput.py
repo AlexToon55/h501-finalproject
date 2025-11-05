@@ -59,7 +59,7 @@ elif daily_listening in ['2 - 3 hours', '3 - 4 hours']:
 else:
     listening_frequency = 'Very frequently'
 # selected_genres = ', '.join(genre)  # Convert list to comma-separated string
-st.write(f'Based on your selection, you listen to {genre}: {listening_frequency}')
+st.write(f'Based on your selection, you listen to {genre} music: {listening_frequency}')
 
 # setting mental health condition
 st.header('Mental Health Condition')
