@@ -139,3 +139,11 @@ st.markdown(
 # render the table
 st.markdown(table_html, unsafe_allow_html=True)
 
+st.subheader('Are these selections correct?')
+confirmation = st.selectbox('Please confirm:', ['Yes', 'No'])
+
+if confirmation == 'Yes':
+    st.success('Selections confirmed!')
+else:
+    st.warning('Please review your selections.')
+
