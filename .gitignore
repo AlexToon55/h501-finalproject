@@ -29,3 +29,8 @@ cython_debug/
 .env
 environment.yml
 env_app.yml
+
+
+#ignore data folders
+data/
+frontend/assets/
