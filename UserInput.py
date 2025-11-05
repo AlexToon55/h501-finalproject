@@ -80,6 +80,14 @@ if condition_ratings:
     for cond, rating in condition_ratings.items():
         st.write(f"{cond}: {rating}")
 
+# Asking about music impact on mental health
+st.header('How has music impacted your mental health?')
+st.subheader('Please choose one of the following:')
+improvement_level = ['No effect', 'Slightly improved', 'Greatly Improved',\
+    'Worsened']
+st.selectbox("Music's Effect on your Mental Health:", improvement_level)
+
+
 # creating a dictionary to display selections
 selections = {
     'Age': age,
