@@ -1,6 +1,4 @@
 """ Core application functions for the Streamlit app. """
-from modules.dataset import load_survey
-
 
 def config(page_title: str):
     """ Configure the Streamlit app with a title and wide layout. """
@@ -11,14 +9,18 @@ def config(page_title: str):
 def survey():
     """ Load and cache the survey dataset. then activate streamlit once the page has called set_page_config """
     import streamlit as st
-    return st.cache_data(load_survey)()
+    from modules.dataset import load_survey
+    
+    @st.cache_data(show_spinner=False)
+    def _load():
+        return load_survey()
+    return _load()
 
 def page_header(title: str):
     """ Display a standardized page header. """
     import streamlit as st
     st.header(title)
     st.info(f"Music & mental health - {title}")
-
 
 def kpis(df):
 # Display key performance indicators (KPIs) from the dataset.
