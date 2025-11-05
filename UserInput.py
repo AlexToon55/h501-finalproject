@@ -154,6 +154,9 @@ st.subheader(
 )
 confirmation2 = st.selectbox('Please confirm:', ['Yes', 'No'], key='confirm_permission')
 
+st.subheader("If you choose 'Yes', the information will be immediately\
+    collected for study and for public view.")
+
 if confirmation2 == 'Yes':
     st.success('Thank you for your participation!')
 else:
