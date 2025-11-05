@@ -147,3 +147,12 @@ if confirmation == 'Yes':
 else:
     st.warning('Please review your selections.')
 
+st.header('Permission')
+st.subheader('Do you consent to allowing us to collect this\
+    information and post it anonymously for others to see?')
+confirmation2 = st.selectbox('Please confirm:', ['Yes', 'No'])
+
+if confirmation 2 == 'Yes':
+    st.success('Thank you for your participation!')
+else:
+    st.warning('We understand and appreciate your time!')
