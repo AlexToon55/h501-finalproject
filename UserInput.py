@@ -82,8 +82,8 @@ if condition_ratings:
 
 # creating a dictionary to display selections
 selections = {
-    'Age Group': age_group,
-    'Favorite Music Genre(s)': genre,
+    'Age': age,
+    'Favorite Music Genre': genre,
     'Music Listening Service': service,
     'Daily Listening': daily_listening,
     'Listening Frequency': listening_frequency,
