@@ -152,10 +152,10 @@ st.subheader(
     'Do you consent to allowing us to collect this information '
     'and post it anonymously for others to see?'
 )
-confirmation2 = st.selectbox('Please confirm:', ['Yes', 'No'], key='confirm_permission')
-
 st.subheader("If you choose 'Yes', the information will be immediately\
     collected for study and for public view.")
+
+confirmation2 = st.selectbox('Please confirm:', ['Yes', 'No'], key='confirm_permission')
 
 if confirmation2 == 'Yes':
     st.success('Thank you for your participation!')
