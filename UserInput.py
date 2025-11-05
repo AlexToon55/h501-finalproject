@@ -86,7 +86,7 @@ st.subheader('Please choose one of the following:')
 improvement_level = ['No effect', 'Slightly improved', 'Greatly Improved',\
     'Worsened']
 improvement_choice = st.selectbox("Music's Effect on your Mental Health:", improvement_level)
-st.write(f'You chose:, {improvement_choice}')
+st.write(f'You chose: {improvement_choice}')
 
 # creating a dictionary to display selections
 selections = {
@@ -97,6 +97,7 @@ selections = {
     'Listening Frequency': listening_frequency,
     'Mental Health Condition': condition,
     'Condition Rating': ', '.join([f"{k}: {v}" for k, v in condition_ratings.items()]),
+    "Music's Effect on Mental Health": improvement_choice
 }
 
 # removing the brackets from the selections dictionary
