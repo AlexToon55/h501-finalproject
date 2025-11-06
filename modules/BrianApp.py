@@ -5,14 +5,25 @@ from datetime import datetime
 import numpy as np
 import plotly.express as px
 
+from modules.assets import links_from_secrets
+
 # reading the csv
-df = pd.read_csv('updateddf.csv')
+df_url = links_from_secrets("updated_df")
+try:
+    df = pd.read_csv(df_url) if df_url else pd.read_csv('updateddf.csv')
+except Exception:
+    df = pd.read_csv('updateddf.csv')
 
 # setting the title
 st.title("Music and Mental Health")
 
 # setting an image
-st.image('MentalHealth.jpg', width = 500)
+MentalHealth = links_from_secrets("MentalHealthImage")
+
+if MentalHealth:
+    st.image(MentalHealth, width = 500)
+else:
+    st.image('MentalHealth.jpg', width = 500)
 
 # setting the age group
 st.header('Select Your Age Group')
