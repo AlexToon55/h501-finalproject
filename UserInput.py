@@ -1,56 +1,50 @@
+# importing the libraries
 import modules.bootstrap
 from modules.app_core import config, survey, page_header
 from modules.nav import sidebar
 import streamlit as st
-from pathlib import Path
-from modules.assets import links_from_secrets
-
-# importing the libraries just for this page
 import pandas as pd
 from datetime import datetime
 import numpy as np
 import plotly.express as px
 
-config("Brian") # sets the page title and icon
+config("User Input") # sets the page title and icon
 sidebar() # add any extra sidebar elements here
-df = survey() # load and cache the dataset
-page_header("Brian")
+# df = survey() # load and cache the dataset
+page_header("Give Your Feedback")
 
 # reading the csv
-from modules.app_core import survey
-df = survey()
+df = pd.read_csv('updateddf.csv')
 
 # setting the title
-st.title("Music and Mental Health")
+st.title("How Has Music Impacted You?")
 
 # setting an image
-img_url = links_from_secrets("MentalHealthImage")
-local = Path(__file__).resolve().parents[1] / "frontend" / "assets" / "MentalHealth.jpg"
+st.image('mental-health-blog.jpg', width = 500)
 
-if img_url:
-    st.image( img_url, width = 500)
-elif local.exists():
-    st.image(str(local), width = 500)
-
-# setting the age group
-st.header('Select Your Age Group')
-age_groups = ['10-15', '16-20', '21-30', '31-40', '41-50', '51-60', '60+']
-age_group = st.selectbox('Age Group', age_groups)
-st.write(f'Selected age group: {age_group}')
+# setting the age entry
+st.header('Enter Your Age')
+age = st.number_input('Age', min_value=1, max_value=100, step=1)
+# Check if age is valid (Streamlit’s number_input already restricts range)
+if 1 <= age <= 100:
+    st.write(f'Your age is: {age}')
+else:
+    st.error('Please enter a valid age between 1 and 100.')
+st.write(f'Selected age is: {age}')
 
 # setting favorite music type
 st.header('What is Your Favorite Music Genre?')
 genres = df['Fav genre'].unique()
 sorted_genres = sorted(genres)
-genre = st.multiselect('Music Genres', sorted_genres)
-st.write(f"Selected genre(s): {', '.join(genre)}")
+genre = st.selectbox('Music Genres', sorted_genres)
+st.write(f'Selected genre: {genre}')
 
 # setting music listening service
 st.header('Source of Music')
 services = df['Primary streaming service'].dropna().unique()
 sorted_services = sorted(services)
-service = st.multiselect('Music Service', sorted_services)
-st.write(f"Selected service(s): {', '.join(service)}")
+service = st.selectbox('Music Service', sorted_services)
+st.write(f"Selected service: {service}")
 
 # setting music listening frequency
 st.header('Daily Music Listening Frequency')
@@ -64,8 +58,8 @@ elif daily_listening in ['2 - 3 hours', '3 - 4 hours']:
     listening_frequency = 'Frequently'
 else:
     listening_frequency = 'Very frequently'
-selected_genres = ', '.join(genre)  # Convert list to comma-separated string
-st.write(f'Based on your selection, you listen to {selected_genres}: {listening_frequency}')
+# selected_genres = ', '.join(genre)  # Convert list to comma-separated string
+st.write(f'Based on your selection, you listen to {genre} music: {listening_frequency}')
 
 # setting mental health condition
 st.header('Mental Health Condition')
@@ -79,71 +73,31 @@ for cond in condition:
     rating = st.slider(f'Rate your {cond} level (0 = none, 10 = high)', 
                        min_value=0, max_value=10, value=5)
     condition_ratings[cond] = rating
-
+    
 # Display the condition ratings
 if condition_ratings:
     st.write("Your condition ratings:")
     for cond, rating in condition_ratings.items():
         st.write(f"{cond}: {rating}")
 
-# creating a conditional graph
-st.header("Music Types' Effect on Conditions")
-if condition:
-    # filter rows where 'Music effects' is 'Improve'
-    filtered_df = df[df["Music effects"] == "Improve"]
-
-    # include rows where at least one condition is 5 or greater
-    condition_columns = ["Anxiety", "Depression", "Insomnia", "OCD"]
-    filtered_df = filtered_df[filtered_df[condition_columns].ge(5).any(axis=1)]
-
-    # extract music types with 'Very frequently'
-    frequency_columns = [col for col in df.columns if col.startswith("Frequency")]
-    music_type_conditions = filtered_df.melt(
-        id_vars=condition_columns + ["Music effects"], 
-        value_vars=frequency_columns, 
-        var_name="Music Type", 
-        value_name="Frequency"
-    )
-    music_type_conditions = music_type_conditions[music_type_conditions["Frequency"] == "Very frequently"]
-
-    # count occurrences by Music Type and Condition
-    music_type_conditions["Music Type"] = music_type_conditions["Music Type"].str.extract(r"\[(.*?)]")  # Extract music type
-    condition_counts = music_type_conditions.melt(
-        id_vars=["Music Type"], 
-        value_vars=condition_columns, 
-        var_name="Condition", 
-        value_name="Severity"
-    )
-    condition_counts = condition_counts[condition_counts["Severity"] >= 5]
-    result = condition_counts.groupby(["Music Type", "Condition"]).size().reset_index(name="Count")
-
-    # filter the data based on selected conditions
-    filtered_result = result[result["Condition"].isin(condition)]
-
-    # create a grouped bar chart
-    fig = px.bar(
-        filtered_result,
-        x="Music Type",
-        y="Count",
-        color="Condition",
-        title="Conditions Improving by Listening to Music Types 'Very Frequently'",
-        labels={"Count": "Count of Conditions Improving", "Music Type": "Music Types", "Condition": "Condition"},
-        barmode="group",
-        text="Count"
-    )
-
-    # display the chart
-    st.plotly_chart(fig)
+# Asking about music impact on mental health
+st.header('How has music impacted your mental health?')
+st.subheader('Please choose one of the following:')
+improvement_level = ['No effect', 'Slightly improved', 'Greatly Improved',\
+    'Worsened']
+improvement_choice = st.selectbox("Music's Effect on your Mental Health:", improvement_level)
+st.write(f'You chose: {improvement_choice}')
 
 # creating a dictionary to display selections
 selections = {
-    'Age Group': age_group,
-    'Favorite Music Genre(s)': genre,
+    'Age': age,
+    'Favorite Music Genre': genre,
     'Music Listening Service': service,
     'Daily Listening': daily_listening,
     'Listening Frequency': listening_frequency,
     'Mental Health Condition': condition,
     'Condition Rating': ', '.join([f"{k}: {v}" for k, v in condition_ratings.items()]),
+    "Music's Effect on Mental Health": improvement_choice
 }
 
 # removing the brackets from the selections dictionary
@@ -194,8 +148,25 @@ st.markdown(
 # render the table
 st.markdown(table_html, unsafe_allow_html=True)
 
-# setting the recommendations
-st.header('Recommendations')
-condition_text = ", ".join(condition) if condition else "your mental health conditions"
-st.subheader(f'Based on your selections, if you listen to {selected_genres} frequently, \
-         it may help with your {condition_text}')
+st.subheader('Are these selections correct?')
+confirmation = st.selectbox('Please confirm:', ['Yes', 'No'], key='confirm_selection')
+
+if confirmation == 'Yes':
+    st.success('Selections confirmed!')
+else:
+    st.warning('Please review your selections.')
+
+st.header('Permission')
+st.subheader(
+    'Do you consent to allowing us to collect this information '
+    'and post it anonymously for others to see?'
+)
+st.subheader("If you choose 'Yes', the information will be immediately\
+    collected for study and for public view.")
+
+confirmation2 = st.selectbox('Please confirm:', ['Yes', 'No'], key='confirm_permission')
+
+if confirmation2 == 'Yes':
+    st.success('Thank you for your participation!')
+else:
+    st.warning('We understand and appreciate your time!')
