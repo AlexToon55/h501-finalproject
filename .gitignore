@@ -33,4 +33,3 @@ env_app.yml
 
 #ignore data folders
 data/
-frontend/assets/

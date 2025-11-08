@@ -4,7 +4,7 @@ from modules.assets import links_from_secrets
 def sidebar():
     import streamlit as st
     with st.sidebar:
-        st.image('frontend/assets/marvel_team.jpg', use_container_width=True)
+        st.image('frontend/assets/marvel_team.jpg', width='stretch')
         st.sidebar.markdown("Music & Mental Health")
         st.sidebar.caption("Group 4 - H501 Final Project")
 
