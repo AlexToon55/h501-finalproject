@@ -2,11 +2,14 @@ import pandas as pd
 import plotly.express as px
 import streamlit as st
 import numpy as np
+from modules.app_core import config, survey, page_header
+from modules.nav import sidebar
 
 
 #streamlit setup
 st.set_page_config(page_title="Music & Mental Health", layout="wide")
 st.title("Music & Mental Health Survey Analysis (Interactive Dashboard)")
+sidebar() # add any extra sidebar elements here
 
 #load dataset
 from modules.app_core import survey
