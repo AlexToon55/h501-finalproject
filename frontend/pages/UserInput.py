@@ -135,3 +135,45 @@ st.markdown(
 # render the table
 st.markdown(table_html, unsafe_allow_html=True)
 
+# --- Confirmation and Consent ---
+st.header("Confirmation and Consent")
+
+# Ask the two required confirmation questions
+confirm_selections = st.radio(
+    "Are these selections correct?",
+    ["Yes", "No"],
+    index=1
+)
+
+consent_to_share = st.radio(
+    "Do you consent to allowing us to collect this information and post it anonymously for others to see?",
+    ["Yes", "No"],
+    index=1
+)
+
+# Define the CSV file path where data will be saved
+submissions_file = "user_submissions.csv"
+
+# --- Save and Display Logic ---
+if confirm_selections == "Yes" and consent_to_share == "Yes":
+    st.success("✅ Thank you for confirming and consenting. Your responses have been recorded.")
+
+    # Convert user's selections into a one-row DataFrame
+    user_data = pd.DataFrame([selections])
+
+    # If file doesn’t exist, create it with headers
+    try:
+        existing_df = pd.read_csv(submissions_file)
+        updated_df = pd.concat([existing_df, user_data], ignore_index=True)
+    except FileNotFoundError:
+        updated_df = user_data
+
+    # Save the updated combined data back to CSV
+    updated_df.to_csv(submissions_file, index=False)
+
+    # Display the full dataset (without index column)
+    st.header("All Anonymous Submissions")
+    st.dataframe(updated_df, use_container_width=True)
+
+else:
+    st.info("Please review your selections and provide consent to record your responses.")
