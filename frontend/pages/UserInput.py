@@ -22,25 +22,28 @@ st.title("How Has Music Impacted You?")
 # setting an image
 st.image('mental-health-blog.jpg', width = 500)
 
-# setting the age group
-st.header('Select Your Age Group')
-age_groups = ['10-15', '16-20', '21-30', '31-40', '41-50', '51-60', '60+']
-age_group = st.selectbox('Age Group', age_groups)
-st.write(f'Selected age group: {age_group}')
+# setting the age entry
+st.header('Enter Your Age')
+age = st.number_input('Age', min_value=1, max_value=100, step=1)
+# Check if age is valid (Streamlit’s number_input already restricts range)
+if 1 <= age <= 100:
+    st.write(f'Your age is: {age}')
+else:
+    st.error('Please enter a valid age between 1 and 100.')
 
 # setting favorite music type
 st.header('What is Your Favorite Music Genre?')
 genres = df['Fav genre'].unique()
 sorted_genres = sorted(genres)
-genre = st.multiselect('Music Genres', sorted_genres)
-st.write(f"Selected genre(s): {', '.join(genre)}")
+genre = st.selectbox('Music Genres', sorted_genres)
+st.write(f'Selected genre: {genre}')
 
 # setting music listening service
 st.header('Source of Music')
 services = df['Primary streaming service'].dropna().unique()
 sorted_services = sorted(services)
-service = st.multiselect('Music Service', sorted_services)
-st.write(f"Selected service(s): {', '.join(service)}")
+service = st.selectbox('Music Service', sorted_services)
+st.write(f"Selected service: {service}")
 
 # setting music listening frequency
 st.header('Daily Music Listening Frequency')
@@ -54,8 +57,8 @@ elif daily_listening in ['2 - 3 hours', '3 - 4 hours']:
     listening_frequency = 'Frequently'
 else:
     listening_frequency = 'Very frequently'
-selected_genres = ', '.join(genre)  # Convert list to comma-separated string
-st.write(f'Based on your selection, you listen to {selected_genres}: {listening_frequency}')
+# selected_genres = ', '.join(genre)  # Convert list to comma-separated string
+st.write(f'Based on your selection, you listen to {genre} music: {listening_frequency}')
 
 # setting mental health condition
 st.header('Mental Health Condition')
@@ -76,15 +79,24 @@ if condition_ratings:
     for cond, rating in condition_ratings.items():
         st.write(f"{cond}: {rating}")
 
+# Asking about music impact on mental health
+st.header('How has music impacted your mental health?')
+st.subheader('Please choose one of the following:')
+improvement_level = ['No effect', 'Slightly improved', 'Greatly Improved',\
+    'Worsened']
+improvement_choice = st.selectbox("Music's Effect on your Mental Health:", improvement_level)
+st.write(f'You chose: {improvement_choice}')
+
 # creating a dictionary to display selections
 selections = {
-    'Age Group': age_group,
-    'Favorite Music Genre(s)': genre,
+    'Age': age,
+    'Favorite Music Genre': genre,
     'Music Listening Service': service,
     'Daily Listening': daily_listening,
     'Listening Frequency': listening_frequency,
     'Mental Health Condition': condition,
     'Condition Rating': ', '.join([f"{k}: {v}" for k, v in condition_ratings.items()]),
+    "Music's Effect on Mental Health": improvement_choice
 }
 
 # removing the brackets from the selections dictionary
@@ -150,20 +162,21 @@ st.write("")  # spacing
 st.subheader("Permission")
 st.write(
     "Do you consent to allowing us to collect this information and post it anonymously for others to see?\n\n"
-    "_If you choose 'Yes', the information will be immediately collected for study and publicly visible._"
-)
-
-consent_to_share = st.radio(
-    "Please confirm:",
-    ["Select an option", "Yes", "No"],
-    index=0
+    "_If you choose 'Yes', the information will be collected for study and made publicly visible._"
 )
 
 # Define the CSV file path where data will be saved
 submissions_file = "user_submissions.csv"
 
-# Add a submit button to make user intent explicit
-submitted = st.button("Submit My Feedback")
+consent_to_share = st.radio(
+    "Please confirm:",
+    ["Select an option", "Yes", "No"],
+    index=0,
+    key="consent_radio"
+)
+
+# --- Handle Submission ---
+submitted = st.button("Submit My Feedback", key="submit_button")
 
 if submitted:
     if confirm_selections == "Yes" and consent_to_share == "Yes":
@@ -178,12 +191,25 @@ if submitted:
 
         updated_df.to_csv(submissions_file, index=False)
         st.success("✅ Thank you for your participation! Your feedback has been recorded.")
-        st.header("All Anonymous Submissions")
-        st.dataframe(updated_df, use_container_width=True)
-
     elif confirm_selections == "Select an option" or consent_to_share == "Select an option":
         st.warning("⚠️ Please make selections for both confirmation and consent before submitting.")
     elif confirm_selections != "Yes":
         st.warning("Please confirm that your selections are correct before submitting.")
     elif consent_to_share != "Yes":
         st.warning("You must consent to anonymous sharing before submission.")
+
+# --- Always Show the Table (if it exists) ---
+st.header("All Anonymous Submissions")
+
+try:
+    all_submissions = pd.read_csv(submissions_file)
+
+    # Drop any lingering odd index column (from previous saves) and reset
+    all_submissions.reset_index(drop=True, inplace=True)
+    if "Unnamed: 0" in all_submissions.columns:
+        all_submissions.drop(columns=["Unnamed: 0"], inplace=True)
+
+    # Display clean table (no index)
+    st.dataframe(all_submissions, use_container_width=True)
+except FileNotFoundError:
+    st.info("No submissions have been recorded yet.")
