@@ -165,12 +165,6 @@ st.write(
     "_If you choose 'Yes', the information will be collected for study and made publicly visible._"
 )
 
-consent_to_share = st.radio(
-    "Please confirm:",
-    ["Select an option", "Yes", "No"],
-    index=0
-)
-
 # Define the CSV file path where data will be saved
 submissions_file = "user_submissions.csv"
 
