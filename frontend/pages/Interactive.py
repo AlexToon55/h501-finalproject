@@ -201,5 +201,16 @@ if not filtered_df.empty:
     else:
         print("⚠️ No genre data available after filtering.")
 
+# Average Mental Health scores by listening Type
+if "listening_type" in filtered_df.columns:
+    subset = filtered_df[["listening_type"] + health_cols].dropna()
+    if not subset.empty:
+        mh_melted = subset.melt(
+                id_vars="listening_type",
+                value_vars=health_cols,
+                var_name="Condition", value_name="Score"
+        )
+        
+
 
 
