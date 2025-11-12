@@ -210,7 +210,22 @@ if "listening_type" in filtered_df.columns:
                 value_vars=health_cols,
                 var_name="Condition", value_name="Score"
         )
-        
+
+        # Box(Whisker Plot
+        st.markdown("### 📊 : Do people who spend more time listening to a single favorite genre report different mental health outcomes compared to those who spread their time across multiple genres? ")
+        fig6 = px.box(mh_melted,
+                x="listening_type", 
+                y="Average Mental Health Score", color="Condition",
+                title="Mental Health Outcomes: Single vs Multi-Genre Listeners",
+                labels={"listening_type": "Listening Style"}
+        )
+
+        st.plotly_chart(fig6, use_container_width=True)
+
+    else:
+        print("⚠️ No data for listening type comparison after filtering.")
+else:
+    print("⚠️ 'listening_type' not found in filtered dataset.")
 
 
 
