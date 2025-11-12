@@ -227,5 +227,12 @@ if "listening_type" in filtered_df.columns:
 else:
     print("⚠️ 'listening_type' not found in filtered dataset.")
 
+# Average Mental Health Scores by Age Group
+if not filtered_df.empty:
+    age_group_summary = filtered_df.groupby('Age_Group')[health_cols].mean()
+    age_group_summary['Avg_Hours'] = filtered_df.groupby('Age_Group')["Hours per day"].mean()
 
+    # Heatmap
+    st.subheader("🎚 Relationship of Average mental health with Age Group and Listening hours")
+    st.markdown("### 🌈 : How do daily music listening habits influence average mental health scores across different age groups?")
 
