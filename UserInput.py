@@ -174,22 +174,6 @@ consent_to_share = st.radio(
 # Define the CSV file path where data will be saved
 submissions_file = "user_submissions.csv"
 
-# --- Confirmation and Consent ---
-st.header("Confirmation and Consent")
-
-confirm_selections = st.radio(
-    "Are these selections correct?",
-    ["Select an option", "Yes", "No"],
-    index=0,
-    key="confirm_radio"
-)
-
-st.subheader("Permission")
-st.write(
-    "Do you consent to allowing us to collect this information and post it anonymously for others to see?\n\n"
-    "_If you choose 'Yes', the information will be immediately collected for study and displayed below._"
-)
-
 consent_to_share = st.radio(
     "Please confirm:",
     ["Select an option", "Yes", "No"],
