@@ -191,7 +191,7 @@ if submitted:
         updated_df.to_csv(submissions_file, index=False)
         st.success("✅ Thank you for your participation! Your feedback has been recorded.")
         st.header("All Anonymous Submissions")
-        st.dataframe(updated_df, use_container_width=True)
+        st.dataframe(updated_df.style.hide(axis="index"), use_container_width=True)
 
     elif confirm_selections == "Select an option" or consent_to_share == "Select an option":
         st.warning("⚠️ Please make selections for both confirmation and consent before submitting.")
