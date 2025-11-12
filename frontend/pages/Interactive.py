@@ -41,6 +41,18 @@ df_clean = df.dropna(subset=health_cols + ["Hours per day", "Exploratory", "Musi
 df_clean[genre_cols] = df_clean[genre_cols].apply(pd.to_numeric, errors="coerce")
 df_clean[health_cols] = df_clean[health_cols].apply(pd.to_numeric, errors="coerce")
 
+# add 'listening_type' to df_clean
+if "listening_type" in df.columns:
+    df_clean['listening_type'] = df.loc[df_clean.index, "listening_type"]
+
+# Define age groups
+df_clean['Age_Group'] = pd.cut(
+    df_clean['Age'],
+    bins=[0, 25, 40, 60, 100],
+    labels=['18-25', '26-40', '41-60', '60+'],
+    include_lowest=True
+)
+
 df_clean["Variety"] = (df_clean[genre_cols] > 0).sum(axis=1)
 df_clean["Avg_health"] = df_clean[health_cols].mean(axis=1)
 
@@ -164,4 +176,6 @@ if bpm_col and bpm_col in filtered_df.columns:
 
 else:
     st.info("⚠️ BPM data not found in this dataset.")
+
+
 
