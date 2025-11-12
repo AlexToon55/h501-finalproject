@@ -14,7 +14,8 @@ sidebar() # add any extra sidebar elements here
 page_header("Give Your Feedback")
 
 # reading the csv
-df = pd.read_csv('updateddf.csv')
+from modules.app_core import survey
+df = survey()
 
 # setting the title
 st.title("How Has Music Impacted You?")
