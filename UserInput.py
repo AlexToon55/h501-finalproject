@@ -30,7 +30,6 @@ if 1 <= age <= 100:
     st.write(f'Your age is: {age}')
 else:
     st.error('Please enter a valid age between 1 and 100.')
-st.write(f'Selected age is: {age}')
 
 # setting favorite music type
 st.header('What is Your Favorite Music Genre?')
