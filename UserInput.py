@@ -163,7 +163,7 @@ st.write("")  # spacing
 st.subheader("Permission")
 st.write(
     "Do you consent to allowing us to collect this information and post it anonymously for others to see?\n\n"
-    "_If you choose 'Yes', the information will be immediately collected for study and publicly visible._"
+    "_If you choose 'Yes', the information will be collected for study and made publicly visible._"
 )
 
 consent_to_share = st.radio(
