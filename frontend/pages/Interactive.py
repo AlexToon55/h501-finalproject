@@ -5,7 +5,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 import plotly.graph_objects as go
-
 from modules.app_core import config, survey, page_header
 from modules.nav import sidebar
 
@@ -23,6 +22,19 @@ df = survey()
 health_cols = [c for c in df.columns if any(x in c for x in ["Anxiety", "Depression", "Insomnia", "OCD"])]
 genre_cols = [c for c in df.columns if c.startswith("Frequency [")]
 bpm_col = "BPM" if "BPM" in df.columns else None  # adjust if your BPM column name differs
+
+# Frequency map for listening type
+freq_map = {
+    "Never": 0,
+    "Rarely": 1,
+    "Sometimes": 2,
+    "Very frequently": 3
+}
+
+genre_freq_cols = [col for col in df.columns if col.startswith("Frequency")]
+df[genre_freq_cols] = df[genre_freq_cols].replace(freq_map)
+df["active_genre_count"] = (df[genre_freq_cols] >= 2).sum(axis=1)
+df["listening_type"] = df["active_genre_count"].apply(lambda x: "Single" if x == 1 else "Multiple")
 
 #clean and prepare data
 df_clean = df.dropna(subset=health_cols + ["Hours per day", "Exploratory", "Music effects"])
