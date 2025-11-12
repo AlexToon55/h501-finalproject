@@ -209,6 +209,13 @@ st.header("All Anonymous Submissions")
 
 try:
     all_submissions = pd.read_csv(submissions_file)
-    st.dataframe(all_submissions.style.hide(axis="index"), use_container_width=True)
+
+    # Drop any lingering odd index column (from previous saves) and reset
+    all_submissions.reset_index(drop=True, inplace=True)
+    if "Unnamed: 0" in all_submissions.columns:
+        all_submissions.drop(columns=["Unnamed: 0"], inplace=True)
+
+    # Display clean table (no index)
+    st.dataframe(all_submissions, use_container_width=True)
 except FileNotFoundError:
     st.info("No submissions have been recorded yet.")
