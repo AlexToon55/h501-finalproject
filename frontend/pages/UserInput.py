@@ -138,16 +138,24 @@ st.markdown(table_html, unsafe_allow_html=True)
 # --- Confirmation and Consent ---
 st.header("Confirmation and Consent")
 
-# Ask the two required confirmation questions
+# Ask the two required confirmation questions — default blank state
 confirm_selections = st.radio(
     "Are these selections correct?",
-    ["No", "Yes"],  # default "No" so users actively confirm
+    ["Select an option", "Yes", "No"],
     index=0
 )
 
+st.write("")  # spacing
+
+st.subheader("Permission")
+st.write(
+    "Do you consent to allowing us to collect this information and post it anonymously for others to see?\n\n"
+    "_If you choose 'Yes', the information will be immediately collected for study and publicly visible._"
+)
+
 consent_to_share = st.radio(
-    "Do you consent to allowing us to collect this information and post it anonymously for others to see?",
-    ["No", "Yes"],
+    "Please confirm:",
+    ["Select an option", "Yes", "No"],
     index=0
 )
 
@@ -159,28 +167,23 @@ submitted = st.button("Submit My Feedback")
 
 if submitted:
     if confirm_selections == "Yes" and consent_to_share == "Yes":
-        # Include a timestamp for logging
         selections["Timestamp"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
-        # Convert user's selections into a one-row DataFrame
         user_data = pd.DataFrame([selections])
 
-        # Try loading existing data, if it exists
         try:
             existing_df = pd.read_csv(submissions_file)
             updated_df = pd.concat([existing_df, user_data], ignore_index=True)
         except FileNotFoundError:
             updated_df = user_data
 
-        # Save updated file
         updated_df.to_csv(submissions_file, index=False)
-
-        # Success message + show all submissions
-        st.success("✅ Your responses have been recorded and added to the dataset.")
+        st.success("✅ Thank you for your participation! Your feedback has been recorded.")
         st.header("All Anonymous Submissions")
         st.dataframe(updated_df, use_container_width=True)
 
+    elif confirm_selections == "Select an option" or consent_to_share == "Select an option":
+        st.warning("⚠️ Please make selections for both confirmation and consent before submitting.")
     elif confirm_selections != "Yes":
-        st.warning("Please confirm your selections before submitting.")
+        st.warning("Please confirm that your selections are correct before submitting.")
     elif consent_to_share != "Yes":
-        st.warning("You must consent to share anonymously before submission.")
+        st.warning("You must consent to anonymous sharing before submission.")
