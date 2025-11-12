@@ -211,7 +211,7 @@ if "listening_type" in filtered_df.columns:
                 var_name="Condition", value_name="Score"
         )
 
-        # Box(Whisker Plot
+        # Box(Whisker Plot)
         st.markdown("### 📊 : Do people who spend more time listening to a single favorite genre report different mental health outcomes compared to those who spread their time across multiple genres? ")
         fig6 = px.box(mh_melted,
                 x="listening_type", 
