@@ -180,7 +180,8 @@ st.header("Confirmation and Consent")
 confirm_selections = st.radio(
     "Are these selections correct?",
     ["Select an option", "Yes", "No"],
-    index=0
+    index=0,
+    key="confirm_radio"
 )
 
 st.subheader("Permission")
@@ -192,30 +193,25 @@ st.write(
 consent_to_share = st.radio(
     "Please confirm:",
     ["Select an option", "Yes", "No"],
-    index=0
+    index=0,
+    key="consent_radio"
 )
 
 # --- Handle Submission ---
-submitted = st.button("Submit My Feedback")
+submitted = st.button("Submit My Feedback", key="submit_button")
 
 if submitted:
     if confirm_selections == "Yes" and consent_to_share == "Yes":
-        # Add a timestamp for logging
         selections["Timestamp"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
-        # Turn selections into a one-row DataFrame
         user_data = pd.DataFrame([selections])
 
-        # Append to or create CSV
         try:
             existing_df = pd.read_csv(submissions_file)
             updated_df = pd.concat([existing_df, user_data], ignore_index=True)
         except FileNotFoundError:
             updated_df = user_data
 
-        # Save updated combined CSV
         updated_df.to_csv(submissions_file, index=False)
-
         st.success("✅ Thank you for your participation! Your feedback has been recorded.")
     elif confirm_selections == "Select an option" or consent_to_share == "Select an option":
         st.warning("⚠️ Please make selections for both confirmation and consent before submitting.")
@@ -229,7 +225,6 @@ st.header("All Anonymous Submissions")
 
 try:
     all_submissions = pd.read_csv(submissions_file)
-    # Hide the index in the display
     st.dataframe(all_submissions.style.hide(axis="index"), use_container_width=True)
 except FileNotFoundError:
     st.info("No submissions have been recorded yet.")
