@@ -21,7 +21,7 @@ df = survey()
 st.title("How Has Music Impacted You?")
 
 # setting an image
-st.image('frontend/assets/mental-health-blog.jpg', width = 500)
+st.image('mental-health-blog.jpg', width = 500)
 
 # setting the age entry
 st.header('Enter Your Age')
@@ -31,7 +31,6 @@ if 1 <= age <= 100:
     st.write(f'Your age is: {age}')
 else:
     st.error('Please enter a valid age between 1 and 100.')
-st.write(f'Selected age is: {age}')
 
 # setting favorite music type
 st.header('What is Your Favorite Music Genre?')
@@ -149,25 +148,69 @@ st.markdown(
 # render the table
 st.markdown(table_html, unsafe_allow_html=True)
 
-st.subheader('Are these selections correct?')
-confirmation = st.selectbox('Please confirm:', ['Yes', 'No'], key='confirm_selection')
+# --- Confirmation and Consent ---
+st.header("Confirmation and Consent")
 
-if confirmation == 'Yes':
-    st.success('Selections confirmed!')
-else:
-    st.warning('Please review your selections.')
-
-st.header('Permission')
-st.subheader(
-    'Do you consent to allowing us to collect this information '
-    'and post it anonymously for others to see?'
+# Ask the two required confirmation questions — default blank state
+confirm_selections = st.radio(
+    "Are these selections correct?",
+    ["Select an option", "Yes", "No"],
+    index=0
 )
-st.subheader("If you choose 'Yes', the information will be immediately\
-    collected for study and for public view.")
 
-confirmation2 = st.selectbox('Please confirm:', ['Yes', 'No'], key='confirm_permission')
+st.write("")  # spacing
 
-if confirmation2 == 'Yes':
-    st.success('Thank you for your participation!')
-else:
-    st.warning('We understand and appreciate your time!')
+st.subheader("Permission")
+st.write(
+    "Do you consent to allowing us to collect this information and post it anonymously for others to see?\n\n"
+    "_If you choose 'Yes', the information will be collected for study and made publicly visible._"
+)
+
+# Define the CSV file path where data will be saved
+submissions_file = "user_submissions.csv"
+
+consent_to_share = st.radio(
+    "Please confirm:",
+    ["Select an option", "Yes", "No"],
+    index=0,
+    key="consent_radio"
+)
+
+# --- Handle Submission ---
+submitted = st.button("Submit My Feedback", key="submit_button")
+
+if submitted:
+    if confirm_selections == "Yes" and consent_to_share == "Yes":
+        selections["Timestamp"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        user_data = pd.DataFrame([selections])
+
+        try:
+            existing_df = pd.read_csv(submissions_file)
+            updated_df = pd.concat([existing_df, user_data], ignore_index=True)
+        except FileNotFoundError:
+            updated_df = user_data
+
+        updated_df.to_csv(submissions_file, index=False)
+        st.success("✅ Thank you for your participation! Your feedback has been recorded.")
+    elif confirm_selections == "Select an option" or consent_to_share == "Select an option":
+        st.warning("⚠️ Please make selections for both confirmation and consent before submitting.")
+    elif confirm_selections != "Yes":
+        st.warning("Please confirm that your selections are correct before submitting.")
+    elif consent_to_share != "Yes":
+        st.warning("You must consent to anonymous sharing before submission.")
+
+# --- Always Show the Table (if it exists) ---
+st.header("All Anonymous Submissions")
+
+try:
+    all_submissions = pd.read_csv(submissions_file)
+
+    # Drop any lingering odd index column (from previous saves) and reset
+    all_submissions.reset_index(drop=True, inplace=True)
+    if "Unnamed: 0" in all_submissions.columns:
+        all_submissions.drop(columns=["Unnamed: 0"], inplace=True)
+
+    # Display clean table (no index)
+    st.dataframe(all_submissions, use_container_width=True)
+except FileNotFoundError:
+    st.info("No submissions have been recorded yet.")
