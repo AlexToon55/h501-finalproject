@@ -21,7 +21,7 @@ df = survey()
 st.title("How Has Music Impacted You?")
 
 # setting an image
-st.image('mental-health-blog.jpg', width = 500)
+st.image('frontend/assets/mental-health-blog.jpg', width = 500)
 
 # setting the age entry
 st.header('Enter Your Age')
