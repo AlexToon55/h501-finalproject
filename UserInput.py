@@ -174,28 +174,62 @@ consent_to_share = st.radio(
 # Define the CSV file path where data will be saved
 submissions_file = "user_submissions.csv"
 
-# Add a submit button to make user intent explicit
+# --- Confirmation and Consent ---
+st.header("Confirmation and Consent")
+
+confirm_selections = st.radio(
+    "Are these selections correct?",
+    ["Select an option", "Yes", "No"],
+    index=0
+)
+
+st.subheader("Permission")
+st.write(
+    "Do you consent to allowing us to collect this information and post it anonymously for others to see?\n\n"
+    "_If you choose 'Yes', the information will be immediately collected for study and displayed below._"
+)
+
+consent_to_share = st.radio(
+    "Please confirm:",
+    ["Select an option", "Yes", "No"],
+    index=0
+)
+
+# --- Handle Submission ---
 submitted = st.button("Submit My Feedback")
 
 if submitted:
     if confirm_selections == "Yes" and consent_to_share == "Yes":
+        # Add a timestamp for logging
         selections["Timestamp"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+        # Turn selections into a one-row DataFrame
         user_data = pd.DataFrame([selections])
 
+        # Append to or create CSV
         try:
             existing_df = pd.read_csv(submissions_file)
             updated_df = pd.concat([existing_df, user_data], ignore_index=True)
         except FileNotFoundError:
             updated_df = user_data
 
+        # Save updated combined CSV
         updated_df.to_csv(submissions_file, index=False)
-        st.success("✅ Thank you for your participation! Your feedback has been recorded.")
-        st.header("All Anonymous Submissions")
-        st.dataframe(updated_df.style.hide(axis="index"), use_container_width=True)
 
+        st.success("✅ Thank you for your participation! Your feedback has been recorded.")
     elif confirm_selections == "Select an option" or consent_to_share == "Select an option":
         st.warning("⚠️ Please make selections for both confirmation and consent before submitting.")
     elif confirm_selections != "Yes":
         st.warning("Please confirm that your selections are correct before submitting.")
     elif consent_to_share != "Yes":
         st.warning("You must consent to anonymous sharing before submission.")
+
+# --- Always Show the Table (if it exists) ---
+st.header("All Anonymous Submissions")
+
+try:
+    all_submissions = pd.read_csv(submissions_file)
+    # Hide the index in the display
+    st.dataframe(all_submissions.style.hide(axis="index"), use_container_width=True)
+except FileNotFoundError:
+    st.info("No submissions have been recorded yet.")
