@@ -198,7 +198,7 @@ if not filtered_df.empty:
         fig5.update_layout(xaxis_tickangle=-45)
         st.plotly_chart(fig5, use_container_width=True)
     else:
-        print("⚠️ No genre data available after filtering.")
+        st.warning("⚠️ No genre data available after filtering.")
 
 # Average Mental Health scores by listening Type
 if "listening_type" in filtered_df.columns:
@@ -223,9 +223,9 @@ if "listening_type" in filtered_df.columns:
         st.plotly_chart(fig6, use_container_width=True)
 
     else:
-        print("⚠️ No data for listening type comparison after filtering.")
+        st.warning("⚠️ No data for listening type comparison after filtering.")
 else:
-    print("⚠️ 'listening_type' not found in filtered dataset.")
+    st.warning("⚠️ 'listening_type' not found in filtered dataset.")
 
 # Average Mental Health Scores by Age Group
 if not filtered_df.empty:
@@ -261,4 +261,5 @@ if not filtered_df.empty:
     st.plotly_chart(fig7, use_container_width=True)
 else:
     st.warning("⚠️ No data available for the selected hours range.")
+
 
