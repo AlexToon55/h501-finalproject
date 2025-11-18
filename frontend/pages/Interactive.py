@@ -2,7 +2,6 @@ import pandas as pd
 import plotly.express as px
 import streamlit as st
 import numpy as np
-import matplotlib.pyplot as plt
 import plotly.graph_objects as go
 from modules.app_core import config, survey, page_header
 from modules.nav import sidebar
@@ -261,5 +260,6 @@ if not filtered_df.empty:
     st.plotly_chart(fig7, use_container_width=True)
 else:
     st.warning("⚠️ No data available for the selected hours range.")
+
 
 
