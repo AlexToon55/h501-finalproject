@@ -20,7 +20,7 @@ def page_header(title: str):
     """ Display a standardized page header. """
     import streamlit as st
     st.header(title)
-    st.info(f"Music & mental health - {title}")
+    st.info(f"Music & Mental Health - {title}")
 
 def kpis(df):
 # Display key performance indicators (KPIs) from the dataset.

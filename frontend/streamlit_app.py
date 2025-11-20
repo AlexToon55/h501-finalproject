@@ -16,4 +16,16 @@ page_header("Home")
 st.write("All pages share the same dataset, loaded and cached at the app level:")
 st.dataframe(df.head(20), use_container_width=True)
 
-kpis(df)
+# Table of what is left to do for the project in a table
+st.header("Project To-Do List")
+data = {
+    "Task": [
+        "Complete Find out more",
+        "Test user input page for validation",
+        "Implement an ML model for mood recommendation for user input page",
+        "Add More Visualizations",
+        "Improve Data Cleaning",
+        "Optimize Performance / better loading screen"]
+}
+# Displaying the table
+st.table(data)
