@@ -2,6 +2,7 @@ import pandas as pd
 import plotly.express as px
 import streamlit as st
 import numpy as np
+import plotly.graph_objects as go
 from modules.app_core import config, survey, page_header
 from modules.nav import sidebar
 
@@ -20,10 +21,35 @@ health_cols = [c for c in df.columns if any(x in c for x in ["Anxiety", "Depress
 genre_cols = [c for c in df.columns if c.startswith("Frequency [")]
 bpm_col = "BPM" if "BPM" in df.columns else None  # adjust if your BPM column name differs
 
+# Frequency map for listening type
+freq_map = {
+    "Never": 0,
+    "Rarely": 1,
+    "Sometimes": 2,
+    "Very frequently": 3
+}
+
+genre_freq_cols = [col for col in df.columns if col.startswith("Frequency")]
+df[genre_freq_cols] = df[genre_freq_cols].replace(freq_map)
+df["active_genre_count"] = (df[genre_freq_cols] >= 2).sum(axis=1)
+df["listening_type"] = df["active_genre_count"].apply(lambda x: "Single" if x == 1 else "Multiple")
+
 #clean and prepare data
 df_clean = df.dropna(subset=health_cols + ["Hours per day", "Exploratory", "Music effects"])
 df_clean[genre_cols] = df_clean[genre_cols].apply(pd.to_numeric, errors="coerce")
 df_clean[health_cols] = df_clean[health_cols].apply(pd.to_numeric, errors="coerce")
+
+# add 'listening_type' to df_clean
+if "listening_type" in df.columns:
+    df_clean['listening_type'] = df.loc[df_clean.index, "listening_type"]
+
+# Define age groups
+df_clean['Age_Group'] = pd.cut(
+    df_clean['Age'],
+    bins=[0, 25, 40, 60, 100],
+    labels=['18-25', '26-40', '41-60', '60+'],
+    include_lowest=True
+)
 
 df_clean["Variety"] = (df_clean[genre_cols] > 0).sum(axis=1)
 df_clean["Avg_health"] = df_clean[health_cols].mean(axis=1)
@@ -148,4 +174,92 @@ if bpm_col and bpm_col in filtered_df.columns:
 
 else:
     st.info("⚠️ BPM data not found in this dataset.")
+
+# Average Mental Health scores by fav genre
+if not filtered_df.empty:
+    genre_subset = filtered_df[["Fav genre"] + health_cols].dropna()
+    if not genre_subset.empty:
+        genre_means = genre_subset.groupby("Fav genre")[health_cols].mean().reset_index()
+        genre_means["avg_score"] = genre_means[health_cols].mean(axis=1)
+        genre_means = genre_means.sort_values("avg_score")
+
+        # Bar plot
+        st.subheader("🎚 Relationship of Average mental health with Favourite Genre and Listening style")
+        st.markdown("### 📊 : Which music genre seems to be the best to fight depression?")
+        fig5 = px.bar(genre_means, 
+            x="Fav genre", 
+            y=health_cols, 
+            barmode="group",
+            title="Average Mental Health Scores vs Fav Genre",
+            labels={"value": "Average Mental Health Score", "Fav genre": "Music Genre"},
+            color_discrete_sequence=px.colors.qualitative.Vivid
+        )
+        fig5.update_layout(xaxis_tickangle=-45)
+        st.plotly_chart(fig5, use_container_width=True)
+    else:
+        st.warning("⚠️ No genre data available after filtering.")
+
+# Average Mental Health scores by listening Type
+if "listening_type" in filtered_df.columns:
+    subset = filtered_df[["listening_type"] + health_cols].dropna()
+    if not subset.empty:
+        mh_melted = subset.melt(
+                id_vars="listening_type",
+                value_vars=health_cols,
+                var_name="Condition", value_name="Score"
+        )
+
+        # Box(Whisker Plot)
+        st.markdown("### 📊 : Do people who spend more time listening to a single favorite genre report different mental health outcomes compared to those who spread their time across multiple genres? ")
+        fig6 = px.box(mh_melted,
+                x="listening_type", 
+                y="Score", 
+                color="Condition",
+                title="Mental Health Outcomes: Single vs Multi-Genre Listeners",
+                labels={"listening_type": "Listening Style"}
+        )
+
+        st.plotly_chart(fig6, use_container_width=True)
+
+    else:
+        st.warning("⚠️ No data for listening type comparison after filtering.")
+else:
+    st.warning("⚠️ 'listening_type' not found in filtered dataset.")
+
+# Average Mental Health Scores by Age Group
+if not filtered_df.empty:
+    age_group_summary = filtered_df.groupby('Age_Group')[health_cols].mean()
+    age_group_summary['Avg_Hours'] = filtered_df.groupby('Age_Group')["Hours per day"].mean()
+
+    # Heatmap
+    st.subheader("🎚 Relationship of Average mental health with Age Group and Listening hours")
+    st.markdown("### 🌈 : How do daily music listening habits influence average mental health scores across different age groups?")
+    
+    fig7 = go.Figure(
+    data=go.Heatmap(
+        z=age_group_summary.values,
+        x=age_group_summary.columns,
+        y=age_group_summary.index,
+        colorscale="RdBu", 
+        reversescale=True,
+        text=np.round(age_group_summary.values, 2),
+        texttemplate="%{text}",
+        textfont={"size": 12},
+        hovertemplate="Age Group: %{y}<br>%{x}: %{z:.2f}<extra></extra>")
+    )
+
+    fig7.update_layout(
+    title="Average Mental Health Scores by Age Group (Filtered by Hours per Day)",
+    xaxis_title="Mental Health Conditions + Avg Hours",
+    yaxis_title="Age Group",
+    yaxis=dict(autorange="reversed"),  # keep order like seaborn
+    height=400,
+    margin=dict(l=60, r=20, t=60, b=40)
+    )
+
+    st.plotly_chart(fig7, use_container_width=True)
+else:
+    st.warning("⚠️ No data available for the selected hours range.")
+
+
 
