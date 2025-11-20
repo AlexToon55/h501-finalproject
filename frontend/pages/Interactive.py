@@ -32,7 +32,7 @@ sidebar()
 
 #load dataset
 from modules.app_core import survey
-df = survey(
+df = survey()
 
 # Identify key columns
 health_cols = [c for c in df.columns if any(x in c for x in ["Anxiety", "Depression", "Insomnia", "OCD"])]
@@ -388,4 +388,5 @@ However, you can use it to ask questions like:
 
 Try adjusting the filters on the left to see how the story changes for different subsets of listeners.
 """
+
 )
