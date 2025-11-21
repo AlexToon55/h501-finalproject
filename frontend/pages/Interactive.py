@@ -157,7 +157,7 @@ else:
 st.divider()
 
 #exploratory behavior vs how music affects them
-st.header("🧭 Does Musical Curiosity Influence Reported Mental Health Effects?")
+st.header("Does Musical Curiosity Influence Reported Mental Health Effects?")
 
 st.markdown("""
 Next, we will look at **exploratory** behavior or whether people like to discover new artists and genres
@@ -186,7 +186,7 @@ else:
 st.divider()
 
 #tempo and mental health
-st.header("🎵 Does Tempo (BPM) Relate to Mental Health?")
+st.header("Does Tempo (BPM) Relate to Mental Health?")
 
 st.markdown("""
 Tempo, measured in **beats per minute (BPM)**, is often associated with our moods and energy levels.  
@@ -390,3 +390,4 @@ Try adjusting the filters on the left to see how the story changes for different
 """
 
 )
+
