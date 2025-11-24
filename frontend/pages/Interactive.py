@@ -188,18 +188,12 @@ else:
 
 st.divider()
 
-# Profiling Report
-st.header("Profiling report")
 
-with st.spinner("Generating profiling report"):
-    profile_html = compute_profile(df)
 
-components.html(profile_html, height=800, scrolling=True)
 
-if st.button("Save profiling report to file (profile.html)"):
-    with open("profile_report.html", "w", encoding="utf-8") as f:
-        f.write(profile_html)
-    st.success("Saved profile_report.html to the working directory.")
+
+
+
 
 
 # --- 3D Scatter Plot section ---
@@ -434,6 +428,7 @@ Try adjusting the filters on the left to see how the story changes for different
 """
 
 )
+
 
 
 
