@@ -201,10 +201,10 @@ st.header("3D Scatter Plot (Insomnia vs Anxiety vs Depression)")
 
 # Check if required columns are available in the dataset
 required_columns = ['Insomnia', 'Anxiety', 'Depression', 'Age']
-if all(col in df.columns for col in required_columns):
+if all(col in filtered_df.columns for col in required_columns):
     try:
         # Create the 3D scatter plot using Plotly
-        fig = px.scatter_3d(df, 
+        fig = px.scatter_3d(filtered_df, 
                             x='Insomnia', 
                             y='Anxiety', 
                             z='Depression', 
@@ -428,6 +428,7 @@ Try adjusting the filters on the left to see how the story changes for different
 """
 
 )
+
 
 
 
