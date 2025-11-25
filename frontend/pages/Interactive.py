@@ -16,139 +16,6 @@ st.set_page_config(page_title="Music & Mental Health", layout="wide")
 
 
 # Custom CSS Styling
-st.markdown(
-    """
-    <style>
-        /* Global Style */
-        body {
-            font-family: 'Helvetica Neue', sans-serif;
-            background-color: #1e1e2f;
-            color: #f0f0f0;
-        }
-
-        /* Sidebar Styling */
-        .css-1d391kg {
-            background-color: #2a2a3e;
-            color: #f0f0f0;
-        }
-
-        .css-1d391kg .sidebar .sidebar-content {
-            background-color: #2a2a3e;
-        }
-
-        .css-1d391kg .sidebar .sidebar-header {
-            font-size: 22px;
-            font-weight: bold;
-            color: #f0f0f0;
-        }
-
-        .css-1d391kg .sidebar .sidebar-content .css-hk4d7z {
-            color: #e5e5e5;
-        }
-
-        /* Streamlit Title and Header */
-        h1 {
-            color: #8c8c8c;
-            font-size: 3em;
-            margin-bottom: 20px;
-        }
-
-        h2, h3 {
-            color: #f5b800;
-            font-weight: bold;
-        }
-
-        h4 {
-            color: #f5b800;
-            font-size: 1.4em;
-        }
-
-        /* Streamlit Button */
-        .stButton button {
-            background-color: #ff9000;
-            color: white;
-            border: 1px solid #ff9000;
-            border-radius: 5px;
-            font-size: 14px;
-            font-weight: bold;
-            padding: 10px 20px;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-        }
-
-        .stButton button:hover {
-            background-color: #f5b800;
-            transform: scale(1.05);
-        }
-
-        /* Streamlit Container */
-        .stContainer {
-            background-color: #242430;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
-            margin-bottom: 20px;
-        }
-
-        /* Streamlit Dataframe Style */
-        .stDataFrame {
-            border-radius: 10px;
-            border: 1px solid #444;
-            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
-        }
-
-        /* Streamlit Sidebar Input Field */
-        .css-1l5o3a5 {
-            background-color: #1e1e2f;
-            color: #fff;
-            border: 1px solid #444;
-            border-radius: 5px;
-            padding: 10px;
-            font-size: 14px;
-        }
-
-        /* Plot Styling */
-        .stPlotlyChart {
-            background-color: #2a2a3e;
-            border-radius: 10px;
-        }
-
-        /* Streamlit Expander */
-        .stExpander {
-            background-color: #343454;
-            color: white;
-        }
-
-        /* Streamlit Input Slider */
-        .stSlider {
-            background-color: #2a2a3e;
-            color: white;
-        }
-
-        .stSlider input {
-            color: white;
-        }
-
-        /* Custom Hover Effects for Tables */
-        .stDataFrame tbody tr:hover {
-            background-color: #f5b800;
-            color: black;
-            cursor: pointer;
-        }
-
-        /* Responsive Layout Tweaks */
-        @media only screen and (max-width: 768px) {
-            h1 {
-                font-size: 2em;
-            }
-            h2 {
-                font-size: 1.5em;
-            }
-        }
-
-    </style>
-    """,
-    unsafe_allow_html=True
-)
 
 st.markdown(
     """
@@ -156,7 +23,7 @@ st.markdown(
         /* Global Style */
         body {
             font-family: 'Helvetica Neue', sans-serif;
-            background-color: #1e1e2f;
+            background-color: #ffffff;
             color: #f0f0f0;
             overflow: hidden;
         }
@@ -262,8 +129,6 @@ st.markdown(
     <div class="falling-emoji headphones emoji26">🎧</div>
     <div class="falling-emoji headphones emoji27">🎧</div>
     <div class="falling-emoji headphones emoji28">🎧</div>
-    <div class="falling-emoji headphones emoji29">🎧</div>
-    <div class="falling-emoji headphones emoji30">🎧</div>
     """,
     unsafe_allow_html=True
 )
@@ -688,6 +553,7 @@ Try adjusting the filters on the left to see how the story changes for different
 """
 
 )
+
 
 
 
