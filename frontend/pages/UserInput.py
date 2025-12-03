@@ -166,6 +166,8 @@ st.write(
     "_If you choose 'Yes', the information will be collected for study and made publicly visible._"
 )
 
+st.markdown(""" **Note:** The relationship between music listening and mental health in this app is based on correlation, not causality. This means that while we may observe patterns, we cannot say that music listening causes improvements or worsening in mental health. """) 
+
 # Define the CSV file path where data will be saved
 submissions_file = "user_submissions.csv"
 
