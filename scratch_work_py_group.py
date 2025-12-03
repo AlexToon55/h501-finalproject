@@ -15,9 +15,7 @@ st.set_page_config(
 # Sticky sidebar nav
 sidebar()
 
-
-# HEADER BANNER (Soft Purple)
-
+# HEADER BANNER (Violet background)
 st.markdown(
     """
     <div style="
@@ -32,8 +30,7 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# FIXED INTRO (Non-Collapsible)
-
+# INTRO + DISCLAIMER + ORIGINAL INSIGHT LIST
 st.markdown(
     """
     ### 💬 About This Dashboard
@@ -46,16 +43,18 @@ st.markdown(
     - Daily listening time  
     - Favorite genres  
     - Music’s emotional effects  
-    - Mental health indicators (anxiety, depression, insomnia, OCD)  
-    - Patterns across user choices  
+    - Mental health indicators (anxiety, depression, insomnia, OCD) 
 
-    Scroll through to discover meaningful connections between music and mental well-being.
+    Scroll through to discover meaningful connections between music and well-being.
+
+    🔎 *Note: These visualizations show self-reported survey data for exploration only.  
+    They do **not** diagnose mental-health conditions.*
     """
 )
 
 st.markdown("<hr style='margin:30px 0;'>", unsafe_allow_html=True)
 
-
+# LOAD DATA
 url = (
     "https://docs.google.com/spreadsheets/d/e/"
     "2PACX-1vRkL35eEcZvs9VtRLf8aIkow3SOybhdZpqOyHMNsia523mKec7sSGAiECVoG9WKaBFtliAXrO5itez3/"
@@ -67,12 +66,11 @@ df.columns = df.columns.str.strip()
 health_cols = ['Anxiety', 'Depression', 'Insomnia', 'OCD']
 genre_col = "Fav genre"
 
+# Ensure the health columns are numeric
 for col in health_cols:
     df[col] = pd.to_numeric(df[col], errors="coerce")
 
-
 # SIDEBAR FILTERS
-
 st.sidebar.header("🎧 Filters")
 
 genres = sorted(df[genre_col].dropna().unique())
@@ -92,14 +90,31 @@ for col in health_cols:
 
 filtered_df = df.copy()
 
+# Apply genre filter
 if selected_genre != "All":
     filtered_df = filtered_df[filtered_df[genre_col] == selected_genre]
 
+# Apply mental health filters
 for col, (low, high) in score_filters.items():
     filtered_df = filtered_df[(filtered_df[col] >= low) & (filtered_df[col] <= high)]
 
-# KPI CARDS
+# WARNING IF SAMPLE TOO SMALL
+if filtered_df.shape[0] < 50:
+    st.warning("⚠️ Many responses were removed, so the results may not reflect everyone’s opinions.")
 
+# KPI CARDS
+st.markdown(
+    """
+    <style>
+    [data-testid="stMetricValue"], [data-testid="stMetricLabel"] {
+        cursor: default !important;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
+# KPIs
 total_resp = filtered_df.shape[0]
 avg_hours = filtered_df["Hours per day"].mean()
 avg_age = filtered_df["Age"].mean()
@@ -114,38 +129,33 @@ k4.metric("🎵 Genres Present", genre_count)
 
 st.markdown("<hr style='margin:30px 0;'>", unsafe_allow_html=True)
 
-# CHART – Mental Health by Genre
-st.header("Mental Health Issues by Genre")
+# 1. MENTAL HEALTH BY GENRE
+st.header("Mental Health Indicators by Genre (Average Scores)")
 
-health_df = filtered_df[[genre_col] + health_cols].copy()
-health_df[health_cols] = (health_df[health_cols] >= 5).astype(int)
-health_df = health_df[health_df[health_cols].sum(axis=1) >= 2]
-
-melted = health_df.melt(id_vars=genre_col, var_name='Mental Health Issue', value_name='Has Issue')
-summary_health = melted.groupby([genre_col, 'Mental Health Issue'])['Has Issue'].mean().reset_index()
-summary_health['Has Issue'] *= 100
+summary_health = filtered_df.groupby(genre_col)[health_cols].mean().reset_index()
+summary_health = summary_health.melt(id_vars=genre_col, var_name='Mental Health Issue', value_name='Average Score')
 
 fig1 = px.bar(
     summary_health,
     x=genre_col,
-    y='Has Issue',
+    y='Average Score',
     color='Mental Health Issue',
     barmode='group',
-    color_discrete_sequence=px.colors.qualitative.Pastel1
+    color_discrete_sequence=px.colors.qualitative.Pastel1 
 )
 fig1.update_layout(xaxis_tickangle=45)
 st.plotly_chart(fig1, use_container_width=True)
 
-top_issue = summary_health.groupby(genre_col)['Has Issue'].mean().idxmax()
-worst_rate = summary_health.groupby(genre_col)['Has Issue'].mean().max()
-arrow = "↑ Higher concern" if worst_rate > 40 else "→ Moderate levels"
+# Insight
+top_issue = summary_health.groupby(genre_col)['Average Score'].mean().idxmax()
+top_value = summary_health.groupby(genre_col)['Average Score'].mean().max()
 
 st.markdown(
     f"""
     <div style="background:#FFF7FA; padding:15px; border-radius:10px; margin-top:10px;">
-        <b>🔍 Insight:</b> {arrow}<br>
-        <i>Listeners of <b>{top_issue}</b> report the highest combined mental health symptoms
-        (~{worst_rate:.1f}%).</i>
+        <b>🔍 Insight:</b><br>
+        <i>Genres vary in average mental-health scores.  
+        Currently, <b>{top_issue}</b> has the highest overall average score (~{top_value:.2f}).</i>
     </div>
     """,
     unsafe_allow_html=True,
@@ -153,7 +163,7 @@ st.markdown(
 
 st.markdown("<hr style='margin:30px 0;'>", unsafe_allow_html=True)
 
-# CHART – Average Listening Hours
+# 2. AVERAGE LISTENING HOURS
 st.header("Average Listening Hours by Genre")
 
 summary_hours = filtered_df.groupby('Fav genre')['Hours per day'].mean().reset_index()
@@ -163,7 +173,7 @@ fig2 = px.bar(
     x='Fav genre',
     y='Hours per day',
     color='Hours per day',
-    color_continuous_scale=px.colors.qualitative.Pastel1
+    color_continuous_scale=['#F1FAEE','#A8DADC','#457B9D','#1D3557']  # Hues of Blue for soft, calm theme
 )
 fig2.update_layout(xaxis_tickangle=45)
 st.plotly_chart(fig2, use_container_width=True)
@@ -171,13 +181,12 @@ st.plotly_chart(fig2, use_container_width=True)
 max_genre = summary_hours.loc[summary_hours['Hours per day'].idxmax(), 'Fav genre']
 max_val = summary_hours['Hours per day'].max()
 
-trend = "↑ High listening engagement" if max_val > 3 else "→ Moderate engagement"
-
 st.markdown(
     f"""
     <div style="background:#F7FAFF; padding:15px; border-radius:10px; margin-top:10px;">
-        <b>🎧 Insight:</b> {trend}<br>
-        <i>Fans of <b>{max_genre}</b> listen the most, averaging <b>{max_val:.2f} hours/day</b>.</i>
+        <b>🎧 Insight:</b><br>
+        <i>Fans of <b>{max_genre}</b> currently listen the most, averaging  
+        about <b>{max_val:.2f} hours/day</b>.</i>
     </div>
     """,
     unsafe_allow_html=True,
@@ -185,11 +194,10 @@ st.markdown(
 
 st.markdown("<hr style='margin:30px 0;'>", unsafe_allow_html=True)
 
-# CHART – Emotional Impact
+# 3. EMOTIONAL IMPACT
 st.header("Music’s Emotional Impact by Genre")
 
-filtered_health = filtered_df[filtered_df[health_cols].ge(5).sum(axis=1) >= 2]
-summary_effects = filtered_health.groupby(['Fav genre', 'Music effects']).size().reset_index(name='Count')
+summary_effects = filtered_df.groupby(['Fav genre', 'Music effects']).size().reset_index(name='Count')
 
 fig3 = px.bar(
     summary_effects,
@@ -197,9 +205,13 @@ fig3 = px.bar(
     y='Count',
     color='Music effects',
     barmode='stack',
-    color_discrete_sequence=px.colors.qualitative.Pastel2
+    color_discrete_sequence=px.colors.qualitative.Pastel1
 )
-fig3.update_layout(xaxis_tickangle=45)
+fig3.update_layout(
+    xaxis_tickangle=45,
+    yaxis_title="Number of Respondents Reporting Emotional Impact"
+)
+
 st.plotly_chart(fig3, use_container_width=True)
 
 top_effect_genre = summary_effects.groupby('Fav genre')['Count'].sum().idxmax()
@@ -209,8 +221,9 @@ st.markdown(
     f"""
     <div style="background:#FFF9F3; padding:15px; border-radius:10px; margin-top:10px;">
         <b>🎭 Emotional Insight:</b><br>
-        <i>Listeners of <b>{top_effect_genre}</b> show the strongest emotional response.
-        The most common reported effect is <b>{top_effect}</b>.</i>
+        <i>Listeners of <b>{top_effect_genre}</b> show the strongest emotional
+        response overall.  
+        The most commonly reported emotional effect is <b>{top_effect}</b>.</i>
     </div>
     """,
     unsafe_allow_html=True,
@@ -218,32 +231,41 @@ st.markdown(
 
 st.markdown("<hr style='margin:30px 0;'>", unsafe_allow_html=True)
 
-# CHART – Genre Popularity
+# 4. GENRE POPULARITY
 st.header("Genre Popularity")
 
+# Count the number of times each genre appears
 summary_counts = filtered_df['Fav genre'].value_counts().reset_index()
 summary_counts.columns = ['Fav genre', 'Count']
 
+# Plot the genre popularity as a bar chart
 fig4 = px.bar(
     summary_counts,
     x='Fav genre',
     y='Count',
     color='Count',
-    color_continuous_scale=px.colors.qualitative.Pastel2
+    color_continuous_scale=['#A8DADC','#7FB3B5', '#457B9D', '#1D3557'] # Hues of Blue for consistency
 )
-fig4.update_layout(xaxis_tickangle=45)
+
+fig4.update_layout(
+    xaxis_tickangle=45,
+    yaxis_title="Number of Respondents Choosing Genre" 
+)
+
 st.plotly_chart(fig4, use_container_width=True)
 
+# Get the genre with the maximum count for the insight
 top_genre = summary_counts.loc[summary_counts['Count'].idxmax(), 'Fav genre']
 
 st.markdown(
     f"""
     <div style="background:#F4FFFA; padding:15px; border-radius:10px; margin-top:10px;">
         <b>⭐ Popularity Insight:</b><br>
-        <i><b>{top_genre}</b> is the most frequently selected favorite genre.</i>
+        <i><b>{top_genre}</b> is currently the most frequently selected favorite genre.</i>
     </div>
     """,
     unsafe_allow_html=True,
 )
 
+# End the page with a divider for consistency
 st.markdown("<hr style='margin:30px 0;'>", unsafe_allow_html=True)
