@@ -37,3 +37,9 @@ def sidebar():
             label = "GitHub Repository",
             icon = "🔗",
             )
+        
+         st.page_link(
+            "https://www.wired.com/story/this-brain-tracking-device-wants-to-help-you-work-smarter/",
+            label = "Neurable Headset Article",
+            icon = "🔗",
+            )
