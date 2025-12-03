@@ -25,7 +25,7 @@ st.image('frontend/assets/mental-health-blog.jpg', width = 500)
 
 # setting the age entry
 st.header('Enter Your Age')
-age = st.number_input('Age', min_value=1, max_value=100, step=1)
+age = st.number_input('Age', min_value=18, max_value=100, step=1)
 # Check if age is valid (Streamlit’s number_input already restricts range)
 if 1 <= age <= 100:
     st.write(f'Your age is: {age}')
