@@ -14,7 +14,7 @@ st.set_page_config(
 )
 
 # Sticky sidebar nav
-sidebar()
+sidebar() 
 
 # HEADER BANNER (Violet background)
 st.markdown(
