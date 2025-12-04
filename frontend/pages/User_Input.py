@@ -25,11 +25,12 @@ st.image('frontend/assets/mental-health-blog.jpg', width = 500)
 
 # setting the age entry
 st.header('Enter Your Age')
-age = st.number_input('Age', min_value=18, max_value=120, step=1)
+# Dropdown with age options
+age = st.selectbox('Select your age', list(range(18, 121)))
 
 if age < 18:
     st.error('You have to be 18 or older to enter data into this page.')
-elif 18 <= age <= 100:
+else:
     st.write(f'Your age is: {age}')
 
 # setting favorite music type
