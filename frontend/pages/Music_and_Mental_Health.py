@@ -221,12 +221,7 @@ st.subheader(f'Based on your selections, if you listen to {selected_genres} freq
 
 # 3D scatter plot
 df_imputed["Cluster"] = df_imputed["Cluster"].astype(str).str.strip()
-df_imputed["Cluster"] = pd.Categorical(df_imputed["Cluster"], categories=["0", "1", "2"], ordered=True)
-custom_color_map = {
-    0: "#FFD700",
-    1: "#A7C7E7",
-    2: "#E15554"
-}
+
 fig = px.scatter_3d(df_imputed, 
                  x = 'Mental Health Severity(PCA1)', 
                  y = 'Tempo Range(PCA2)',
@@ -236,6 +231,17 @@ fig = px.scatter_3d(df_imputed,
                  color_discrete_map=custom_color_map,
                  title="K-Means Clustering into 3 groups"
                  )
+cluster_color_map = {
+    "0": "#FFD700",  # Yellow
+    "1": "#1E90FF",  # Blue
+    "2": "#FF69B4"   # Pink
+}
+
+for trace in fig.data:
+    cluster_name = trace.name.strip()
+    if cluster_name in cluster_color_map:
+        trace.marker.color = cluster_color_map[cluster_name]
+        
 fig.update_traces(marker=dict(size=6, opacity=0.75))
 st.plotly_chart(fig, use_container_width=True)
 
