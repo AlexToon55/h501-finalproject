@@ -64,7 +64,7 @@ st.write(f'Based on your selection, you listen to {selected_genres}: {listening_
 st.header('Mental Health Condition')
 conditions = ['Anxiety', 'Depression', 'Insomnia', 'OCD']
 condition = st.multiselect('Condition', conditions)
-st.write(f'Selected condition(s): {', '. join(condition)}')
+st.write(f"Selected condition(s): {', '. join(condition)}")
 
 # Create sliders dynamically for each selected condition
 condition_ratings = {}
@@ -230,5 +230,5 @@ fig = px.scatter_3d(df_imputed,
 st.plotly_chart(fig)
 
 # cluster recommendations
-st.subheader('You belong to, 'hence it is recommended that')
+st.subheader('You belong to, hence it is recommended that')
 
