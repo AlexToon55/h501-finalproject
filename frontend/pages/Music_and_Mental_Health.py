@@ -22,7 +22,7 @@ df = survey()
 st.title("Music and Mental Health")
 
 # setting an image
-MentalHealth = links_from_secrets("MentalHealthImage")
+st.image('frontend/assets/mental-health.jpg', width = 500)
 
 if MentalHealth:
     st.image(MentalHealth, width = 500)
