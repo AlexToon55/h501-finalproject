@@ -137,6 +137,16 @@ df_imputed[features] = imputer.fit_transform(df_imputed[features])
 scaler = StandardScaler()
 X = scaler.fit_transform(df_imputed[features])
 
+# Train Model
+kmeans = KMeans(n_clusters = 3, random_state = 42)
+
+# Add cluster labels to the DataFrame
+df_imputed['Cluster'] = kmeans.fit_predict(X)
+
+# Make principal components
+pca = PCA(n_components = 3)
+X_pca = pca.fit_transform(X)
+
 
 
 # creating a dictionary to display selections
