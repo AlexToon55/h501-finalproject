@@ -7,3 +7,9 @@ textColor="#51575c"
 
 [client]
 showSidebarNavigation = true
+
+[browser]
+showDevTools = false  # Disables the developer tools
+
+[server]
+enableCORS = false
