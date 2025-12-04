@@ -17,11 +17,6 @@ st.title("Music and Mental Health")
 # setting an image
 st.image('frontend/assets/mental_health.jpg', width = 500) 
 
-if MentalHealth:
-    st.image(MentalHealth, width = 500)
-else:
-    st.image('MentalHealth.jpg', width = 500)
-
 # setting the age group
 st.header('Select Your Age Group')
 age_groups = ['10-15', '16-20', '21-30', '31-40', '41-50', '51-60', '60+']
