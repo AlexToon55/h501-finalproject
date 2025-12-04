@@ -220,6 +220,7 @@ st.subheader(f'Based on your selections, if you listen to {selected_genres} freq
          it may help with your {condition_text}')
 
 # 3D scatter plot
+df_imputed["Cluster"] = df_imputed["Cluster"].astype(str)
 custom_color_map = {
     0: "FFD700",
     1: "#1E90FF",
