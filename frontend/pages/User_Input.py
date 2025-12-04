@@ -183,6 +183,10 @@ consent_to_share = st.radio(
     key="consent_radio"
 )
 
+st.markdown(
+        ":red[DISCLAIMER: By clicking 'Submit my feedback', you are acknowledging you are at least 18 years old.]"
+        )
+
 # --- Handle Submission ---
 submitted = st.button("Submit My Feedback", key="submit_button")
 
