@@ -220,11 +220,17 @@ st.subheader(f'Based on your selections, if you listen to {selected_genres} freq
          it may help with your {condition_text}')
 
 # 3D scatter plot
+custom_color_map = {
+    0: 'yellow',
+    1: 'blue',
+    2: 'pink'
+}
 fig = px.scatter_3d(df_imputed, 
                  x = 'Mental Health Severity(PCA1)', 
                  y = 'Tempo Range(PCA2)',
                  z = 'Listening Style(PCA3)',
                  color = 'Cluster',
+                 color_discrete_map=custom_color_map,
                  title="K-Means Clustering into 3 groups"
                  )
 st.plotly_chart(fig)
