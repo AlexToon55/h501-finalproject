@@ -230,9 +230,9 @@ fig = px.scatter_3d(df_imputed,
                  title="K-Means Clustering into 3 groups"
                  )
 cluster_color_map = {
-    "0 : High Distress · Heavy Use · Fast BPM": "#0B3C5D",  
-    "1 : Stable Mood · Light Use · Neutral BPM": "#F4D03F",  
-    "2 : Low Distress · Moderate Use · Fast BPM . Insomnia": "#800000"   
+    "0": "#0B3C5D",  
+    "1": "#F4D03F",  
+    "2": "#800000"   
 }
 
 for cluster in fig.data:
