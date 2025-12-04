@@ -227,8 +227,6 @@ fig = px.scatter_3d(df_imputed,
                  y = 'Tempo Range(PCA2)',
                  z = 'Listening Style(PCA3)',
                  color = 'Cluster',
-                 category_orders={"Cluster": ["0", "1", "2"]},
-                 color_discrete_map=custom_color_map,
                  title="K-Means Clustering into 3 groups"
                  )
 cluster_color_map = {
