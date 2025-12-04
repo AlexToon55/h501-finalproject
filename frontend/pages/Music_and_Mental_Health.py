@@ -8,11 +8,15 @@ import plotly.express as px
 from modules.assets import links_from_secrets
 
 # reading the csv
-df_url = links_from_secrets("updated_df")
-try:
-    df = pd.read_csv(df_url) if df_url else pd.read_csv('updateddf.csv')
-except Exception:
-    df = pd.read_csv('updateddf.csv')
+# df_url = links_from_secrets("updated_df")
+# try:
+    # df = pd.read_csv(df_url) if df_url else pd.read_csv('updateddf.csv')
+# except Exception:
+#    df = pd.read_csv('updateddf.csv')
+
+# reading the csv
+from modules.app_core import survey
+df = survey()
 
 # setting the title
 st.title("Music and Mental Health")
