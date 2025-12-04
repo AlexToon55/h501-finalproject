@@ -4,6 +4,10 @@ import pandas as pd
 from datetime import datetime
 import numpy as np
 import plotly.express as px
+from sklearn.preprocessing import StandardScaler
+from sklearn.cluster import KMeans
+from sklearn.impute import SimpleImputer 
+from sklearn.decomposition import PCA
 
 from modules.assets import links_from_secrets
 
@@ -184,3 +188,7 @@ st.header('Recommendations')
 condition_text = ", ".join(condition) if condition else "your mental health conditions"
 st.subheader(f'Based on your selections, if you listen to {selected_genres} frequently, \
          it may help with your {condition_text}')
+
+# cluster recommendations
+st.subheader('You belong to' {user_cluster}, 'hence it is recommended that')
+
