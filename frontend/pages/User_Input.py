@@ -13,6 +13,10 @@ sidebar() # add any extra sidebar elements here
 # df = survey() # load and cache the dataset
 page_header("Give Your Feedback")
 
+st.markdown(
+        ":red[DISCLAIMER: In order to enter data into this page, you must be at least 18 years old.]"
+        )
+
 # reading the csv
 from modules.app_core import survey
 df = survey()
