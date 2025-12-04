@@ -15,6 +15,9 @@ from modules.assets import links_from_secrets
 from modules.app_core import survey
 df = survey()
 
+# define numerical features
+features = ['Age', 'Hours per day', 'BPM', 'Anxiety','Depression','Insomnia','OCD']
+
 # setting the title
 st.title("Music and Mental Health")
 
