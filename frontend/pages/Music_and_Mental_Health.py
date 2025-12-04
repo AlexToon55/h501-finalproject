@@ -224,8 +224,8 @@ df_imputed["Cluster"] = df_imputed["Cluster"].astype(str).str.strip()
 df_imputed["Cluster"] = pd.Categorical(df_imputed["Cluster"], categories=["0", "1", "2"], ordered=True)
 custom_color_map = {
     0: "#FFD700",
-    1: "#1E90FF",
-    2: "#FF69B4"
+    1: "#A7C7E7",
+    2: "#E15554"
 }
 fig = px.scatter_3d(df_imputed, 
                  x = 'Mental Health Severity(PCA1)', 
