@@ -222,9 +222,9 @@ st.subheader(f'Based on your selections, if you listen to {selected_genres} freq
 # 3D scatter plot
 df_imputed["Cluster"] = df_imputed["Cluster"].astype(str)
 custom_color_map = {
-    0: "yellow",
-    1: "blue",
-    2: "pink"
+    0: "#FFD700",
+    1: "#1E90FF",
+    2: "#FF69B4"
 }
 fig = px.scatter_3d(df_imputed, 
                  x = 'Mental Health Severity(PCA1)', 
