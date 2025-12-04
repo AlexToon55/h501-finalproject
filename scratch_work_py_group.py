@@ -3,6 +3,7 @@ import plotly.express as px
 import streamlit as st
 import numpy as np
 import plotly.graph_objects as go
+import base64
 
 from modules.nav import sidebar
 
@@ -266,6 +267,95 @@ st.markdown(
     """,
     unsafe_allow_html=True,
 )
+st.markdown("<br><br>", unsafe_allow_html=True)
 
-# End the page with a divider for consistency
+# 5. BRAIN WAVES & MUSIC
+st.header("🧠 Brain Waves, Emotions & Music")
+st.markdown("<br><br>", unsafe_allow_html=True)
+# Brain Waves Image (centered)
+col1, col2, col3 = st.columns([1, 2, 1])
+
+with col2:
+    st.image(
+        "frontend/assets/BrainWaves.jpg",
+        caption="Brain wave frequency ranges and associated states",
+        width=450   # adjust this number (300–450 works nicely)
+    )
+
+# Brain Waves Section
+st.markdown(
+    """
+    <div style="background:#F0F4FF; padding:20px; border-radius:12px; margin-top:10px;">
+        <h3>Brain Waves</h3>
+        <p>
+        Gamma Waves >30 Hz (Associated with ability to process auditory and visual stimuli and our ability to learn)​<br>
+        Beta Waves 12-30 Hz (Associated with highest levels of attention)(Signify Alertness and Logic)(Beta waves of 22-30 Hz can be characterized as anxiety)​<br>
+        Alpha Waves 8-12 Hz (Associated with relaxed wakefulness and unique thoughts)(Aid in mental coordination and calmness)​<br>
+        Theta Waves 4-8 Hz (Associated with creativity, memory, and dreams)(Are not an external factor but are believed to be a part of the inner sense of the body)​<br>
+        Delta Waves 1-4 Hz (Associated with deep sleep and relaxation)(Their presence leads to less anxiety, improved sleep, and relief from headaches)(Deteriorate as you age)
+        </p>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
+
+# Brain Waves → Emotions → Music
+st.markdown(
+    """
+    <div style="background:#E8F5E9; padding:20px; border-radius:12px; margin-top:10px;">
+        <h3>Brain Waves → Emotions → Music</h3>
+        <p>
+        Gamma Waves > Joy/Insightful > complex and dynamic genres (Metal/Complex Jazz)​<br>
+        Beta Waves > Active thinking/Anxiety > Fast Pop/EDM​<br>
+        Alpha Waves > Focused/Balanced/Mindful > Lofi/Chill/Soft Rock​<br>
+        Theta Waves > Creativity/Memory > Acoustic/Relaxing Music​<br>
+        Delta Waves > Sleep/Restorative/Healing > Ambient/Classical
+        </p>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
+
+# Load image and encode as base64
+with open("frontend/assets/Neurable.jpg", "rb") as img_file:
+    encoded_img = base64.b64encode(img_file.read()).decode()
+
+# Neurable section with text and image together
+st.markdown(
+    f"""
+    <div style="display: flex; align-items: center; background:#FFF7FA; padding:20px; border-radius:12px; margin-top:10px;">
+        <div style="flex: 2; padding-right:20px;">
+            <h3>Neurable (Wearable brain wave scanning headset)</h3>
+            <p>
+            Uses EEG to measure brain waves and displays in app. You choose what type of activity you are doing (work, study, entertainment, creative).<br>
+            The app displays high, medium, and low focus moments throughout the day and tells you what activity you were doing as long as you enter in your info.<br>
+            Currently can be a bit limited in reading brain waves (interference such as hair).<br>
+            <a href="https://www.wired.com/story/this-brain-tracking-device-wants-to-help-you-work-smarter/" target="_blank">Read more here</a>
+            </p>
+        </div>
+        <div style="flex: 1;">
+            <img src="data:image/jpeg;base64,{encoded_img}" style="width:100%; border-radius:12px;">
+        </div>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
+# Future Outlook Section
+st.markdown(
+    """
+    <div style="background:#FFF8E1; padding:20px; border-radius:12px; margin-top:10px;">
+        <h3>Future Outlook</h3>
+        <p>
+        Currently users can see how our app turns listening habits into insights, and insights into emotional awareness.  
+        Devices like the Neurable brain wave headset can help us learn more about the connections between music and mental health.  
+        Repeated data gathering can help optimize the user music experience and improve mental and emotional health.  
+        Imagine what real-time data could do to close the loop between emotion, music, and mental health!
+        </p>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
+
 st.markdown("<hr style='margin:30px 0;'>", unsafe_allow_html=True)
+
