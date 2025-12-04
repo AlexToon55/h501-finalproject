@@ -220,7 +220,7 @@ st.subheader(f'Based on your selections, if you listen to {selected_genres} freq
          it may help with your {condition_text}')
 
 # 3D scatter plot
-df_imputed["Cluster"] = df_imputed["Cluster"].astype(str)
+df_imputed["Cluster"] = df_imputed["Cluster"].astype(str).str.strip()
 custom_color_map = {
     0: "#FFD700",
     1: "#1E90FF",
@@ -231,10 +231,12 @@ fig = px.scatter_3d(df_imputed,
                  y = 'Tempo Range(PCA2)',
                  z = 'Listening Style(PCA3)',
                  color = 'Cluster',
+                 category_orders={"Cluster": ["0", "1", "2"]},
                  color_discrete_map=custom_color_map,
                  title="K-Means Clustering into 3 groups"
                  )
-st.plotly_chart(fig)
+fig.update_traces(marker=dict(size=6, opacity=0.75))
+st.plotly_chart(fig, use_container_width=True)
 
 # cluster recommendations
 st.subheader('You belong to, hence it is recommended that')
