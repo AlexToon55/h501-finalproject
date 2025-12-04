@@ -230,15 +230,15 @@ fig = px.scatter_3d(df_imputed,
                  title="K-Means Clustering into 3 groups"
                  )
 cluster_color_map = {
-    "0": "#FFD700",  # Yellow
-    "1": "#1E90FF",  # Blue
-    "2": "#FF69B4"   # Pink
+    "0": "#0B3C5D",  
+    "1": "#F4D03F",  
+    "2": "#800000"   
 }
 
-for trace in fig.data:
-    cluster_name = trace.name.strip()
+for cluster in fig.data:
+    cluster_name = cluster.name.strip()
     if cluster_name in cluster_color_map:
-        trace.marker.color = cluster_color_map[cluster_name]
+        cluster.marker.color = cluster_color_map[cluster_name]
         
 fig.update_traces(marker=dict(size=6, opacity=0.75))
 st.plotly_chart(fig, use_container_width=True)
