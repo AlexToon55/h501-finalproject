@@ -14,6 +14,7 @@ from modules.assets import links_from_secrets
 # reading the csv
 from modules.app_core import survey
 df = survey()
+df = df[(df["BPM"].isna()) | ((df["BPM"] >= 40) & (df["BPM"] <= 250))]
 
 # define numerical features
 features = ['Age', 'Hours per day', 'BPM', 'Anxiety','Depression','Insomnia','OCD']
