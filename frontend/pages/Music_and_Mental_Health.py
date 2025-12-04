@@ -219,6 +219,16 @@ condition_text = ", ".join(condition) if condition else "your mental health cond
 st.subheader(f'Based on your selections, if you listen to {selected_genres} frequently, \
          it may help with your {condition_text}')
 
+# 3D scatter plot
+fig = px.scatter_3d(df_imputed, 
+                 x = 'Mental Health Severity(PCA1)', 
+                 y = 'Tempo Range(PCA2)',
+                 z = 'Listening Style(PCA3)',
+                 color = 'Cluster',
+                 title="K-Means Clustering into 3 groups"
+                 )
+st.plotly_chart(fig)
+
 # cluster recommendations
 st.subheader('You belong to' {user_cluster}, 'hence it is recommended that')
 
