@@ -239,6 +239,17 @@ for cluster in fig.data:
     cluster_name = cluster.name.strip()
     if cluster_name in cluster_color_map:
         cluster.marker.color = cluster_color_map[cluster_name]
+
+# legends
+legend_names = {
+    "0": "High Distress · Heavy Use · Fast BPM",
+    "1": "Stable Mood · Light Use · Neutral BPM",
+    "2": "Low Distress · Moderate Use · Fast BPM + Insomnia"
+}
+
+for cluster in fig.data:
+    name = cluster.name.strip()
+    cluster.name = legend_names.get(name, name)
         
 fig.update_traces(marker=dict(size=6, opacity=0.75))
 st.plotly_chart(fig, use_container_width=True)
