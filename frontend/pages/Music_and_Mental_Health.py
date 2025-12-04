@@ -242,9 +242,9 @@ for cluster in fig.data:
 
 # legends
 legend_names = {
-    "0": "0 : High Distress · Heavy Use · Fast BPM",
-    "1": "1 : Stable Mood · Light Use · Neutral BPM",
-    "2": "2 :Low Distress · Moderate Use · Fast BPM + Insomnia"
+    "0": "High Distress · Heavy Use · Fast BPM",
+    "1": "Stable Mood · Light Use · Neutral BPM",
+    "2": "Low Distress · Moderate Use · Fast BPM + Insomnia"
 }
 
 for cluster in fig.data:
