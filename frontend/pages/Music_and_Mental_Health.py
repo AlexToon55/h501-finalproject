@@ -221,6 +221,7 @@ st.subheader(f'Based on your selections, if you listen to {selected_genres} freq
 
 # 3D scatter plot
 df_imputed["Cluster"] = df_imputed["Cluster"].astype(str).str.strip()
+df_imputed["Cluster"] = pd.Categorical(df_imputed["Cluster"], categories=["0", "1", "2"], ordered=True)
 custom_color_map = {
     0: "#FFD700",
     1: "#1E90FF",
