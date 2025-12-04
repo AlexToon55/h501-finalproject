@@ -128,6 +128,17 @@ if condition:
     # display the chart
     st.plotly_chart(fig)
 
+# Impute missing values before scaling
+imputer = SimpleImputer(strategy='median')
+df_imputed = df[features].copy()
+df_imputed[features] = imputer.fit_transform(df_imputed[features])
+
+# Scale values
+scaler = StandardScaler()
+X = scaler.fit_transform(df_imputed[features])
+
+
+
 # creating a dictionary to display selections
 selections = {
     'Age Group': age_group,
