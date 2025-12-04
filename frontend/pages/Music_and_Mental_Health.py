@@ -147,6 +147,11 @@ df_imputed['Cluster'] = kmeans.fit_predict(X)
 pca = PCA(n_components = 3)
 X_pca = pca.fit_transform(X)
 
+# Store PCA values for plotting
+df_imputed["Mental Health Severity(PCA1)"] = X_pca[:, 0]
+df_imputed["Tempo Range(PCA2)"] = X_pca[:, 1]
+df_imputed["Listening Style(PCA3)"] = X_pca[:, 2]
+
 
 
 # creating a dictionary to display selections
