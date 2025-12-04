@@ -230,5 +230,5 @@ fig = px.scatter_3d(df_imputed,
 st.plotly_chart(fig)
 
 # cluster recommendations
-st.subheader('You belong to' {user_cluster}, 'hence it is recommended that')
+st.subheader('You belong to, 'hence it is recommended that')
 
