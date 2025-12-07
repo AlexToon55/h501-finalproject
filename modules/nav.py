@@ -30,10 +30,10 @@ def sidebar():
             "https://www.kaggle.com/code/melissamonfared/mental-health-music-relationship-analysis-eda",
             label = "Kaggle Notebook",
             icon = "🔗",
-            )
-        
+        )
+            
         st.page_link(
             "https://github.com/AlexToon55/h501-finalproject",
             label = "GitHub Repository",
             icon = "🔗",
-            )
+        )   
