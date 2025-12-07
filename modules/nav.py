@@ -17,7 +17,7 @@ def sidebar():
         st.sidebar.caption("Alex Toon (HULK)")
         st.sidebar.caption("Nathanael Jeffries (Captain America)")
         st.sidebar.caption("Tessa Joseph ()")
-        st.sidebar.caption("Roshan Naidu ()")
+        st.sidebar.caption("Roshan Naidu (Thor Odinson)")
         st.sidebar.caption("Mohid Qadeer ()")
         st.sidebar.caption("Lucas Tetrault ()")
         st.sidebar.caption("Special Guest: Brian Blandino ()")
@@ -33,7 +33,13 @@ def sidebar():
         )
             
         st.page_link(
-            "https://github.com/AlexToon55/h501-finalproject",
-            label = "GitHub Repository",
-            icon = "🔗",
-        )   
+        "https://github.com/AlexToon55/h501-finalproject",
+        label = "GitHub Repository",
+        icon = "🔗",
+        )
+        
+        st.page_link(
+        "https://www.wired.com/story/this-brain-tracking-device-wants-to-help-you-work-smarter/",
+        label = "Neurable Headset Article",
+        icon = "🔗",
+        )
