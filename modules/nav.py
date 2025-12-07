@@ -30,16 +30,16 @@ def sidebar():
             "https://www.kaggle.com/code/melissamonfared/mental-health-music-relationship-analysis-eda",
             label = "Kaggle Notebook",
             icon = "🔗",
-            )
+        )
+            
+        st.page_link(
+        "https://github.com/AlexToon55/h501-finalproject",
+        label = "GitHub Repository",
+        icon = "🔗",
+        )
         
         st.page_link(
-            "https://github.com/AlexToon55/h501-finalproject",
-            label = "GitHub Repository",
-            icon = "🔗",
-            )
-        
-         st.page_link(
-            "https://www.wired.com/story/this-brain-tracking-device-wants-to-help-you-work-smarter/",
-            label = "Neurable Headset Article",
-            icon = "🔗",
-            )
+        "https://www.wired.com/story/this-brain-tracking-device-wants-to-help-you-work-smarter/",
+        label = "Neurable Headset Article",
+        icon = "🔗",
+        )
