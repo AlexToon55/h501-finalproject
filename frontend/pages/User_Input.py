@@ -13,6 +13,10 @@ sidebar() # add any extra sidebar elements here
 # df = survey() # load and cache the dataset
 page_header("Give Your Feedback")
 
+st.markdown(
+        ":red[DISCLAIMER: In order to enter data into this page, you must be at least 18 years old.]"
+        )
+
 # reading the csv
 from modules.app_core import survey
 df = survey()
@@ -25,12 +29,13 @@ st.image('frontend/assets/mental-health-blog.jpg', width = 500)
 
 # setting the age entry
 st.header('Enter Your Age')
-age = st.number_input('Age', min_value=1, max_value=100, step=1)
-# Check if age is valid (Streamlit’s number_input already restricts range)
-if 1 <= age <= 100:
-    st.write(f'Your age is: {age}')
+# Dropdown with age options
+age = st.selectbox('Select your age', list(range(18, 121)))
+
+if age < 18:
+    st.error('You have to be 18 or older to enter data into this page.')
 else:
-    st.error('Please enter a valid age between 1 and 100.')
+    st.write(f'Your age is: {age}')
 
 # setting favorite music type
 st.header('What is Your Favorite Music Genre?')
@@ -177,6 +182,10 @@ consent_to_share = st.radio(
     index=0,
     key="consent_radio"
 )
+
+st.markdown(
+        ":red[DISCLAIMER: By clicking 'Submit My feedback', you are acknowledging you are at least 18 years old.]"
+        )
 
 # --- Handle Submission ---
 submitted = st.button("Submit My Feedback", key="submit_button")

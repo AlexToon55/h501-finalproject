@@ -14,7 +14,7 @@ st.set_page_config(
 )
 
 # Sticky sidebar nav
-sidebar() 
+sidebar()
 
 # HEADER BANNER (Violet background)
 st.markdown(
@@ -358,3 +358,4 @@ st.markdown(
 )
 
 st.markdown("<hr style='margin:30px 0;'>", unsafe_allow_html=True)
+
