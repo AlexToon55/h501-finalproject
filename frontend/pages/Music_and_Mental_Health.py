@@ -259,7 +259,6 @@ fig = px.scatter_3d(df_imputed,
                  )
         
 fig.update_traces(marker=dict(size=6, opacity=0.75))
-)
 st.plotly_chart(fig, use_container_width=True)
 
 # Cluster definitions
