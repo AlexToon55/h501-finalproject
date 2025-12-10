@@ -267,11 +267,9 @@ fig.update_traces(marker=dict(size=6, opacity=0.75))
 st.plotly_chart(fig, use_container_width=True)
 
 # Cluster definitions
-st.subheader("""
-Cluster 0: High Distress · Heavy Use · Fast BPM  
-Cluster 1: Stable Mood · Light Use · Neutral BPM  
-Cluster 2: Low Distress · Moderate Use · Fast BPM + Insomnia
-""")
+st.subheader("Cluster 0: High Distress · Heavy Use · Fast BPM")  
+st.subheader("Cluster 1: Stable Mood · Light Use · Neutral BPM")  
+st.subheader("Cluster 2: Low Distress · Moderate Use · Fast BPM + Insomnia")
 
 # All conditions expected by the model
 all_conditions = ['Anxiety', 'Depression', 'Insomnia', 'OCD']
