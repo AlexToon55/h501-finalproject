@@ -69,6 +69,18 @@ else:
 selected_genres = ', '.join(genre)  # Convert list to comma-separated string
 st.write(f'Based on your selection, you listen to {selected_genres}: {listening_frequency}')
 
+# Convert to a single numeric value for k-means
+listening_mapping = {
+    'Less than 1 hour': 0.5,
+    '1 - 2 hours': 1.5,
+    '2 - 3 hours': 2.5,
+    '3 - 4 hours': 3.5,
+    '4 - 5 hours': 4.5,
+    '5 - 6 hours': 5.5,
+    '7 or more hours': 7
+}
+avg_hours = listening_mapping[daily_listening]
+
 # setting mental health condition
 st.header('Mental Health Condition')
 conditions = ['Anxiety', 'Depression', 'Insomnia', 'OCD']
@@ -254,7 +266,52 @@ for cluster in fig.data:
 fig.update_traces(marker=dict(size=6, opacity=0.75))
 st.plotly_chart(fig, use_container_width=True)
 
+# Cluster definitions
+st.subheader(f'Cluster 0 : High Distress · Heavy Use · Fast BPM' 
+             Cluster 1 : Stable Mood · Light Use · Neutral BPM
+             Cluster 2 : Low distress . Moderate usage . Fast BPM . Insomnia')
+             
+# All conditions expected by the model
+all_conditions = ['Anxiety', 'Depression', 'Insomnia', 'OCD']
+
+# Fill unselected conditions with rating = 0
+complete_ratings = {
+    cond: condition_ratings.get(cond, 0) for cond in all_conditions
+}
+# dictionary for numerical inputs
+user_data = {
+    'Age': [age],
+    'Hours per day': [avg_hours],
+    'BPM': [bpm],
+    'Anxiety': [complete_ratings['Anxiety']],
+    'Depression': [complete_ratings['Depression']],
+    'Insomnia': [complete_ratings['Insomnia']],
+    'OCD': [complete_ratings['OCD']]
+}
+# convert dictionary to dataframe
+user_df = pd.DataFrame(user_data, columns=features)
+
+# Scale input values and predict user cluster
+user_scaled = scaler.transform(user_df)
+user_cluster = kmeans.predict(user_scaled)[0]
+
+# Define Recommendations
+recommendations = {
+    0: (
+        "You show high emotional distress and heavy music use with fast BPM. "
+        "Try reducing fast-tempo tracks and shifting toward slower, calming music. "
+        "Pair your listening with short breaks or grounding exercises for better mood regulation."
+    ),
+    1: (
+        "Your profile shows stable mood, light music use, and neutral BPM. "
+        "Maintain your balanced listening habits and use music for focus, relaxation, or creativity."
+    ),
+    2: (
+        "You show low distress and moderate listening with a preference for fast BPM, but possible insomnia. "
+        "Try avoiding high-BPM music late at night and use calm or slow ambient tracks to support sleep."
+    )
+}
 
 # cluster recommendations
-st.subheader(f'You belong to, hence it is recommended that')
+st.subheader(f"You belong to Cluster {user_cluster} and {recommendations[user_cluster]}")
 
