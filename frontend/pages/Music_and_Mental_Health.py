@@ -264,6 +264,15 @@ for cluster in fig.data:
 
         
 fig.update_traces(marker=dict(size=6, opacity=0.75))
+fig.update_layout(
+    legend_title="Cluster",
+    legend=dict(itemsizing='constant'),
+)
+
+fig.update_layout(
+    legend_traceorder="normal",
+    category_orders={"Cluster": [0, 1, 2]}  # enforce order
+)
 st.plotly_chart(fig, use_container_width=True)
 
 # Cluster definitions
