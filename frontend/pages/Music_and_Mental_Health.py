@@ -302,7 +302,7 @@ recommendations = {
         "Maintain your balanced listening habits and use music for focus, relaxation, or creativity."
     ),
     2: (
-        "You show low distress and moderate listening with a preference for fast BPM, but possible insomnia. "
+        "You show low to medium distress and moderate listening with a preference for fast BPM, but possible insomnia. "
         "Try avoiding high-BPM music late at night and use calm or slow ambient tracks to support sleep."
     )
 }
