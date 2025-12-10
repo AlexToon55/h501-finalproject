@@ -177,9 +177,9 @@ df_imputed["Listening Style(PCA3)"] = X_pca[:, 2]
 
 # creating a dictionary to display selections
 selections = {
-    'Age Group': age_group,
+    'Age': age,
     'Favorite Music Genre(s)': genre,
-    'Music Tempo (BPM)': bpm),
+    'Music Tempo (BPM)': bpm,
     'Music Listening Service': service,
     'Daily Listening': daily_listening,
     'Listening Frequency': listening_frequency,
@@ -267,10 +267,12 @@ fig.update_traces(marker=dict(size=6, opacity=0.75))
 st.plotly_chart(fig, use_container_width=True)
 
 # Cluster definitions
-st.subheader(f'Cluster 0 : High Distress · Heavy Use · Fast BPM' 
-             Cluster 1 : Stable Mood · Light Use · Neutral BPM
-             Cluster 2 : Low distress . Moderate usage . Fast BPM . Insomnia')
-             
+st.subheader("""
+Cluster 0: High Distress · Heavy Use · Fast BPM  
+Cluster 1: Stable Mood · Light Use · Neutral BPM  
+Cluster 2: Low Distress · Moderate Use · Fast BPM + Insomnia
+""")
+
 # All conditions expected by the model
 all_conditions = ['Anxiety', 'Depression', 'Insomnia', 'OCD']
 
@@ -313,5 +315,6 @@ recommendations = {
 }
 
 # cluster recommendations
-st.subheader(f"You belong to Cluster {user_cluster} and {recommendations[user_cluster]}")
+st.subheader(f"You belong to **Cluster {user_cluster}**")
+st.write(recommendations[user_cluster])
 
