@@ -38,6 +38,16 @@ sorted_genres = sorted(genres)
 genre = st.multiselect('Music Genres', sorted_genres)
 st.write(f"Selected genre(s): {', '.join(genre)}")
 
+# setting music tempo (BPM)
+st.subheader("Select Music Tempo (BPM)")
+bpm = st.slider(
+    "Choose your preferred tempo:",
+    min_value=40,
+    max_value=240,
+    value=120, 
+    step=1)
+st.write(f"Selected Tempo: **{bpm} BPM**")
+
 # setting music listening service
 st.header('Source of Music')
 services = df['Primary streaming service'].dropna().unique()
@@ -158,6 +168,7 @@ df_imputed["Listening Style(PCA3)"] = X_pca[:, 2]
 selections = {
     'Age Group': age_group,
     'Favorite Music Genre(s)': genre,
+    'Music Tempo (BPM)': bpm),
     'Music Listening Service': service,
     'Daily Listening': daily_listening,
     'Listening Frequency': listening_frequency,
