@@ -25,11 +25,10 @@ st.title("Music and Mental Health")
 # setting an image
 st.image('frontend/assets/mental_health.jpg', width = 500) 
 
-# setting the age group
-st.header('Select Your Age Group')
-age_groups = ['10-15', '16-20', '21-30', '31-40', '41-50', '51-60', '60+']
-age_group = st.selectbox('Age Group', age_groups)
-st.write(f'Selected age group: {age_group}')
+# setting the age slider
+st.header('Select Your Age')
+age = st.slider('Age', min_value=10, max_value=80, value=25)
+st.write(f'Selected age: {age}')
 
 # setting favorite music type
 st.header('What is Your Favorite Music Genre?')
@@ -255,6 +254,7 @@ for cluster in fig.data:
 fig.update_traces(marker=dict(size=6, opacity=0.75))
 st.plotly_chart(fig, use_container_width=True)
 
+
 # cluster recommendations
-st.subheader('You belong to, hence it is recommended that')
+st.subheader(f'You belong to, hence it is recommended that')
 
