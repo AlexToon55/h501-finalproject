@@ -288,6 +288,7 @@ st.markdown(
     <div style="background:#F0F4FF; padding:20px; border-radius:12px; margin-top:10px;">
         <h3>Brain Waves</h3>
         <p>
+        These are the various types of brain waves that you experience: <br>
         Gamma Waves >30 Hz (Associated with ability to process auditory and visual stimuli and our ability to learn)​<br>
         Beta Waves 12-30 Hz (Associated with highest levels of attention)(Signify Alertness and Logic)(Beta waves of 22-30 Hz can be characterized as anxiety)​<br>
         Alpha Waves 8-12 Hz (Associated with relaxed wakefulness and unique thoughts)(Aid in mental coordination and calmness)​<br>
@@ -305,6 +306,7 @@ st.markdown(
     <div style="background:#E8F5E9; padding:20px; border-radius:12px; margin-top:10px;">
         <h3>Brain Waves → Emotions → Music</h3>
         <p>
+        These are the emotions and forms of music that may be connected with each form of brain waves:<br>
         Gamma Waves > Joy/Insightful > complex and dynamic genres (Metal/Complex Jazz)​<br>
         Beta Waves > Active thinking/Anxiety > Fast Pop/EDM​<br>
         Alpha Waves > Focused/Balanced/Mindful > Lofi/Chill/Soft Rock​<br>
@@ -327,9 +329,9 @@ st.markdown(
         <div style="flex: 2; padding-right:20px;">
             <h3>Neurable (Wearable brain wave scanning headset)</h3>
             <p>
-            Uses EEG to measure brain waves and displays in app. You choose what type of activity you are doing (work, study, entertainment, creative).<br>
+            The Neurable headset uses EEG to measure brain waves and displays in app. You choose what type of activity you are doing (work, study, entertainment, creative).<br>
             The app displays high, medium, and low focus moments throughout the day and tells you what activity you were doing as long as you enter in your info.<br>
-            Currently can be a bit limited in reading brain waves (interference such as hair).<br>
+            Currently can be a bit limited in reading brain waves (interference with objects such as thick hair).<br>
             <a href="https://www.wired.com/story/this-brain-tracking-device-wants-to-help-you-work-smarter/" target="_blank">Read more here</a>
             </p>
         </div>
