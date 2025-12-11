@@ -85,7 +85,7 @@ avg_hours = listening_mapping[daily_listening]
 st.header('Mental Health Condition')
 conditions = ['Anxiety', 'Depression', 'Insomnia', 'OCD']
 condition = st.multiselect('Condition', conditions)
-st.write(f"Selected condition(s): {', '. join(condition)}")
+st.write(f"Selected condition(s): {', '.join(condition)}")
 
 # Create sliders dynamically for each selected condition
 condition_ratings = {}
