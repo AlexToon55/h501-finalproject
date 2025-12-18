@@ -291,6 +291,11 @@ user_scaled = scaler.transform(user_df)
 user_cluster = kmeans.predict(user_scaled)[0]
 
 # Define Recommendations
+st.info(
+    "Disclaimer: This recommendation is for educational purposes only and does not "
+    "provide medical or clinical advice or a mental health diagnosis."
+)
+
 recommendations = {
     0: (
         "You show high emotional distress and heavy music use with fast BPM. "
